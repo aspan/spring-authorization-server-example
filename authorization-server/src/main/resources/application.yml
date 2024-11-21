@@ -1,0 +1,35 @@
+debug: true
+logging:
+  level:
+    org.springframework.security: trace
+server:
+  port: 9000
+spring:
+  application:
+    name: Authentication Server
+  security:
+    oauth2:
+      authorizationserver:
+        issuer: http://auth-server:9000
+        client:
+          web-client:
+            registration:
+              client-id: web-client
+              client-secret: "{noop}secret"
+              client-name: Web Client
+              client-authentication-methods:
+                - client_secret_basic
+              authorization-grant-types:
+                - authorization_code
+                - refresh_token
+                - client_credentials
+              redirect-uris:
+                - http://127.0.0.1:8082/login/oauth2/code/web-client-oidc
+                - http://localhost:8082/login/oauth2/code/web-client-oidc
+              scopes:
+                - openid
+                - profile
+                - email
+                - phone
+                - address
+            require-authorization-consent: true
