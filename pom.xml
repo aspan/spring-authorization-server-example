@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.5</version>
+        <version>3.4.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
@@ -15,23 +15,68 @@
     <name>auth</name>
     <description>Spring Boot Authentication Server Example</description>
     <url/>
+
+    <properties>
+        <bootstrap.version>5.3.3</bootstrap.version>
+        <java.version>23</java.version>
+        <jquery.version>3.7.1</jquery.version>
+        <js-cookie.version>3.0.1</js-cookie.version>
+        <nimbus-jose-jwt.version>9.47</nimbus-jose-jwt.version>
+    </properties>
+
     <licenses>
-        <license/>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
     </licenses>
+
     <developers>
-        <developer/>
+        <developer>
+            <id>andreas</id>
+            <name>Andreas Asplund</name>
+            <email>andreas@asplund.biz</email>
+            <timezone>CET</timezone>
+            <organization>Asplund.biz</organization>
+            <organizationUrl>https://asplund.biz</organizationUrl>
+        </developer>
     </developers>
+
+    <scm>
+        <url>https://github.com/aspan/spring-oauth-server</url>
+        <connection>scm:git:git://github.com/aspan/spring-oauth-server.git</connection>
+        <developerConnection>scm:git:ssh://github.com:aspan/spring-oauth-server.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.nimbusds</groupId>
+                <artifactId>nimbus-jose-jwt</artifactId>
+                <version>${nimbus-jose-jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>bootstrap</artifactId>
+                <version>${bootstrap.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>jquery</artifactId>
+                <version>${jquery.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>js-cookie</artifactId>
+                <version>${js-cookie.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
     <modules>
         <module>web</module>
         <module>authorization-server</module>
     </modules>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
-    <properties>
-        <java.version>23</java.version>
-    </properties>
 </project>
