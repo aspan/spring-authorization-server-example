@@ -1,6 +1,3 @@
-/*
- * Copyright (C) 2006 - 2024 Lekab Communication Systems AB
- */
 package com.example.web;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -25,9 +22,6 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-/**
- * @author Andreas Asplund
- */
 @Configuration
 public class SecurityConfiguration {
     @Bean
