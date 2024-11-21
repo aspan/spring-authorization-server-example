@@ -1,0 +1,37 @@
+debug: true
+server:
+  port: 8082
+
+logging:
+  level:
+    org.springframework.security: trace
+
+spring:
+  application:
+    name: Web Application
+  security:
+    oauth2:
+      client:
+        registration:
+          web-client-oidc:
+            provider: spring
+            client-id: web-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope:
+              - openid
+            client-name: web-client-oidc
+          web-client-authorization-code:
+            provider: spring
+            client-id: web-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope:
+              - openid
+              - resources.read
+            client-name: web-client-authorization-code
+        provider:
+          spring:
+            issuer-uri: http://127.0.0.1:9000

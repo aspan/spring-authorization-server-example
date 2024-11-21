@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.4.1</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.example</groupId>
+    <artifactId>auth</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>auth</name>
+    <description>Spring Boot Authentication Server Example</description>
+    <url/>
+
+    <properties>
+        <bootstrap.version>5.3.3</bootstrap.version>
+        <java.version>23</java.version>
+        <jquery.version>3.7.1</jquery.version>
+        <js-cookie.version>3.0.1</js-cookie.version>
+        <logback.version>1.5.16</logback.version>
+        <nimbus-jose-jwt.version>10.0.1</nimbus-jose-jwt.version>
+        <vaadin.version>24.6.1</vaadin.version>
+    </properties>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>andreas</id>
+            <name>Andreas Asplund</name>
+            <email>andreas@asplund.biz</email>
+            <timezone>CET</timezone>
+            <organization>Asplund.biz</organization>
+            <organizationUrl>https://asplund.biz</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>https://github.com/aspan/spring-oauth-server</url>
+        <connection>scm:git:git://github.com/aspan/spring-oauth-server.git</connection>
+        <developerConnection>scm:git:ssh://github.com:aspan/spring-oauth-server.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.nimbusds</groupId>
+                <artifactId>nimbus-jose-jwt</artifactId>
+                <version>${nimbus-jose-jwt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-bom</artifactId>
+                <version>${vaadin.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>bootstrap</artifactId>
+                <version>${bootstrap.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>jquery</artifactId>
+                <version>${jquery.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>js-cookie</artifactId>
+                <version>${js-cookie.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <modules>
+        <module>authorization-server</module>
+        <module>resource</module>
+        <module>vaadin</module>
+        <module>web</module>
+    </modules>
+</project>

@@ -1,0 +1,16 @@
+debug: true
+server:
+  port: 8090
+
+logging:
+  level:
+    org.springframework.security: trace
+
+spring:
+  application:
+    name: Resource Server Application
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://127.0.0.1:9000
