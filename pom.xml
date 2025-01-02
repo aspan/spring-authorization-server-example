@@ -21,7 +21,7 @@
         <java.version>23</java.version>
         <jquery.version>3.7.1</jquery.version>
         <js-cookie.version>3.0.1</js-cookie.version>
-        <nimbus-jose-jwt.version>9.47</nimbus-jose-jwt.version>
+        <nimbus-jose-jwt.version>10.0</nimbus-jose-jwt.version>
     </properties>
 
     <licenses>
