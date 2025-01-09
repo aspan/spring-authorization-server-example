@@ -16,7 +16,7 @@ export default function HelloWorldView() {
 
     return (
         <VerticalLayout theme="spacing padding">
-            <h1>Hello {}!</h1>
+            <h1>Hello {auth.state.user?.username}!</h1>
             {/* TODO: Make logout redirect to authentication server */}
             <Button onClick={async () => auth.logout()}>Logout</Button>
 
