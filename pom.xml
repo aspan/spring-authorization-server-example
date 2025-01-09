@@ -89,6 +89,7 @@
 
     <modules>
         <module>authorization-server</module>
+        <module>hilla</module>
         <module>resource</module>
         <module>vaadin</module>
         <module>web</module>

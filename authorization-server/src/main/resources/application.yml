@@ -12,6 +12,28 @@ spring:
       authorizationserver:
         issuer: http://127.0.0.1:9000
         client:
+          hilla-client:
+            registration:
+              client-id: hilla-client
+              client-secret: "{noop}hilla"
+              client-name: Hilla Client
+              client-authentication-methods:
+                - client_secret_basic
+              authorization-grant-types:
+                - authorization_code
+                - refresh_token
+                - client_credentials
+              redirect-uris:
+                - http://localhost:8084/login/oauth2/code/hilla-client-oidc
+              scopes:
+                - openid
+                - profile
+                - email
+                - phone
+                - address
+              post-logout-redirect-uris:
+                - http://localhost:8084
+            require-authorization-consent: false
           vaadin-client:
             registration:
               client-id: vaadin-client
