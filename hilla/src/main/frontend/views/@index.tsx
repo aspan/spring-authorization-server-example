@@ -1,6 +1,6 @@
 import {ViewConfig} from '@vaadin/hilla-file-router/types.js';
 import {useSignal} from '@vaadin/hilla-react-signals';
-import {Button, Notification, TextField, VerticalLayout} from '@vaadin/react-components';
+import {Button, HorizontalLayout, Notification, TextField, VerticalLayout} from '@vaadin/react-components';
 import {HelloWorldService} from 'Frontend/generated/endpoints.js';
 import {useAuth} from "Frontend/util/auth";
 
@@ -17,10 +17,11 @@ export default function HelloWorldView() {
     return (
         <VerticalLayout theme="spacing padding">
             <h1>Hello {auth.state.user?.username}!</h1>
-            {/* TODO: Make logout redirect to authentication server */}
-            <Button onClick={async () => auth.logout()}>Logout</Button>
-
-            <section className="flex p-m gap-m items-end">
+            <form id="logout" action="/logout" method="post">
+                <input type="hidden" name="_csrf" value={document.querySelector("meta[name='_csrf']")?.getAttribute("content") || ''}/>
+                <Button onClick={async () => (document.querySelector('#logout') as HTMLFormElement).submit()}>Logout</Button>
+            </form>
+            <HorizontalLayout theme="spacing" style={{ alignItems: 'end' }}>
                 <TextField
                     label="Your name"
                     onValueChanged={(e) => {
@@ -35,7 +36,7 @@ export default function HelloWorldView() {
                 >
                     Say hello
                 </Button>
-            </section>
+            </HorizontalLayout>
         </VerticalLayout>
     );
 }
