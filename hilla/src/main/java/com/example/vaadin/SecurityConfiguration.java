@@ -13,26 +13,9 @@ import com.vaadin.flow.spring.security.VaadinWebSecurity;
 public class SecurityConfiguration extends VaadinWebSecurity {
     private static final String LOGIN_URL = "/login";
 
-    private final ClientRegistrationRepository clientRegistrationRepository;
-
-    public SecurityConfiguration(ClientRegistrationRepository clientRegistrationRepository) {
-        this.clientRegistrationRepository = clientRegistrationRepository;
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
-        http.oauth2Login(c ->
-                        c.loginPage(LOGIN_URL).permitAll())
-                .logout(logout ->
-                        logout.logoutSuccessHandler(logoutSuccessHandler())
-                );
-    }
-
-    private LogoutSuccessHandler logoutSuccessHandler() {
-        var oidcLogoutSuccessHandler = new OidcClientInitiatedLogoutSuccessHandler(this.clientRegistrationRepository);
-        oidcLogoutSuccessHandler.setPostLogoutRedirectUri("{baseUrl}");
-        oidcLogoutSuccessHandler.setRedirectStrategy(new UidlRedirectStrategy());
-        return oidcLogoutSuccessHandler;
+        setOAuth2LoginPage(http, LOGIN_URL);
     }
 }

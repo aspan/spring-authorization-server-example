@@ -23,7 +23,7 @@
         <js-cookie.version>3.0.1</js-cookie.version>
         <logback.version>1.5.16</logback.version>
         <nimbus-jose-jwt.version>10.0.1</nimbus-jose-jwt.version>
-        <vaadin.version>24.6.2</vaadin.version>
+        <vaadin.version>24.7.0.alpha4</vaadin.version>
     </properties>
 
     <licenses>
@@ -94,4 +94,22 @@
         <module>vaadin</module>
         <module>web</module>
     </modules>
+
+    <repositories>
+        <repository>
+            <id>vaadin-prereleases</id>
+            <url>
+                https://maven.vaadin.com/vaadin-prereleases/
+            </url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>vaadin-prereleases</id>
+            <url>
+                https://maven.vaadin.com/vaadin-prereleases/
+            </url>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
