@@ -5,8 +5,11 @@ import static org.springframework.security.oauth2.client.web.reactive.function.c
 import java.util.Collections;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
@@ -15,10 +18,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
+import org.springframework.web.server.ResponseStatusException;
 
 @SpringBootApplication
 @RestController
 public class WebApplication {
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebApplication.class);
     private final WebClient webClient;
 
     public WebApplication(WebClient webClient) {
@@ -38,13 +44,21 @@ public class WebApplication {
     public String[] getResources(
             @RegisteredOAuth2AuthorizedClient("web-client-authorization-code") OAuth2AuthorizedClient authorizedClient
     ) {
-        return this.webClient
-                .get()
-                .uri("http://localhost:8090/resources")
-                .attributes(oauth2AuthorizedClient(authorizedClient))
-                .retrieve()
-                .bodyToMono(String[].class)
-                .block();
+        try {
+            return this.webClient
+                    .get()
+                    .uri("http://localhost:8090/resources")
+                    .attributes(oauth2AuthorizedClient(authorizedClient))
+                    .retrieve()
+                    .bodyToMono(String[].class)
+                    .block();
+        } catch (WebClientResponseException e) {
+            LOGGER.error("", e);
+            throw new ResponseStatusException(e.getStatusCode(), e.getResponseBodyAsString());
+        } catch (Exception e) {
+            LOGGER.error("", e);
+            throw new ResponseStatusException(HttpStatusCode.valueOf(500), e.getMessage());
+        }
     }
 }
 
