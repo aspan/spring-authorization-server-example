@@ -19,7 +19,7 @@ public class SecurityConfiguration {
     @Order(1)
     SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         var authorizationServerConfigurer = OAuth2AuthorizationServerConfigurer.authorizationServer()
-                .oidc(withDefaults());
+                                                                               .oidc(withDefaults());
         return http
                 .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
                 .with(authorizationServerConfigurer, Customizer.withDefaults())

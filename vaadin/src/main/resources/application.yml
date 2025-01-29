@@ -25,7 +25,7 @@ spring:
             client-name: vaadin-client-oidc
         provider:
           spring:
-            issuer-uri: http://127.0.0.1:9000
+            issuer-uri: http://localhost:9000
 
   mustache:
     check-template-location: false

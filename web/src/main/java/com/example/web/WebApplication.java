@@ -47,7 +47,7 @@ public class WebApplication {
         try {
             return this.webClient
                     .get()
-                    .uri("http://localhost:8090/resources")
+                    .uri("http://127.0.0.1:8090/resources")
                     .attributes(oauth2AuthorizedClient(authorizedClient))
                     .retrieve()
                     .bodyToMono(String[].class)

@@ -6,11 +6,11 @@ server:
   port: 9000
 spring:
   application:
-    name: Authentication Server
+    name: Authorization Server
   security:
     oauth2:
       authorizationserver:
-        issuer: http://127.0.0.1:9000
+        issuer: http://localhost:9000
         client:
           hilla-client:
             registration:
@@ -24,7 +24,7 @@ spring:
                 - refresh_token
                 - client_credentials
               redirect-uris:
-                - http://localhost:8084/login/oauth2/code/hilla-client-oidc
+                - http://127.0.0.1:8084/login/oauth2/code/hilla-client-oidc
               scopes:
                 - openid
                 - profile
@@ -32,7 +32,7 @@ spring:
                 - phone
                 - address
               post-logout-redirect-uris:
-                - http://localhost:8084
+                - http://127.0.0.1:8084
             require-authorization-consent: false
           vaadin-client:
             registration:
@@ -46,7 +46,7 @@ spring:
                 - refresh_token
                 - client_credentials
               redirect-uris:
-                - http://localhost:8083/login/oauth2/code/vaadin-client-oidc
+                - http://127.0.0.1:8083/login/oauth2/code/vaadin-client-oidc
               scopes:
                 - openid
                 - profile
@@ -54,7 +54,7 @@ spring:
                 - phone
                 - address
               post-logout-redirect-uris:
-                - http://localhost:8083
+                - http://127.0.0.1:8083
             require-authorization-consent: false
           web-client:
             registration:
@@ -68,17 +68,40 @@ spring:
                 - refresh_token
                 - client_credentials
               redirect-uris:
-                - http://localhost:8082/login/oauth2/code/web-client-oidc
-                - http://localhost:8082/login/oauth2/code/web-client-authorization-code
+                - http://127.0.0.1:8082/login/oauth2/code/web-client-oidc
+                - http://127.0.0.1:8082/login/oauth2/code/web-client-authorization-code
               scopes:
                 - openid
                 - profile
                 - email
                 - phone
                 - address
+                - offline_access
                 - resources.read
               post-logout-redirect-uris:
-                - http://localhost:8082
+                - http://127.0.0.1:8082
+            require-authorization-consent: false
+          desktop-client:
+            registration:
+              client-id: desktop-client
+              client-secret: "{noop}desktop-secret"
+              client-name: Desktop Client
+              client-authentication-methods:
+                - client_secret_post
+              authorization-grant-types:
+                - authorization_code
+                - refresh_token
+                - client_credentials
+              redirect-uris:
+                - http://127.0.0.1:8085/success
+              scopes:
+                - openid
+                - profile
+                - email
+                - phone
+                - address
+                - offline_access
+                - resources.read
             require-authorization-consent: false
     user:
       name: admin

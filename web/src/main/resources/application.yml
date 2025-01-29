@@ -34,4 +34,4 @@ spring:
             client-name: web-client-authorization-code
         provider:
           spring:
-            issuer-uri: http://127.0.0.1:9000
+            issuer-uri: http://localhost:9000
