@@ -23,7 +23,7 @@
         <js-cookie.version>3.0.1</js-cookie.version>
         <logback.version>1.5.16</logback.version>
         <nimbus-jose-jwt.version>10.0.1</nimbus-jose-jwt.version>
-        <vaadin.version>24.7.0.alpha6</vaadin.version>
+        <vaadin.version>24.7.0.alpha7</vaadin.version>
     </properties>
 
     <licenses>
