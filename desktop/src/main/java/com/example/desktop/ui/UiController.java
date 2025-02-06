@@ -48,7 +48,7 @@ public class UiController implements StageAware {
                     url -> {
                         webView.getEngine().load(url);
                         VBox dialogVbox = new VBox(20, webView);
-                        Scene dialogScene = new Scene(dialogVbox, 800, 600);
+                        Scene dialogScene = new Scene(dialogVbox, 640, 480);
                         dialog.setScene(dialogScene);
                         dialog.show();
                     },

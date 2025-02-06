@@ -5,9 +5,9 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0" spacing="5.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.desktop.ui.UiController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="300.0" spacing="5.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.desktop.ui.UiController">
    <children>
-      <Button fx:id="login" mnemonicParsing="false" prefWidth="200.0" text="Login" />
+      <Button fx:id="login" mnemonicParsing="false" prefWidth="300.0" text="Login" />
       <Label fx:id="label" text="Label" />
       <Label fx:id="resourcesLabel" text="Resources"/>
    </children>
