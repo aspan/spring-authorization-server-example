@@ -1,4 +1,4 @@
-package com.example.vaadin.security;
+package com.example.hilla.security;
 
 import java.util.Optional;
 
@@ -16,7 +16,7 @@ public class AuthenticatedUser {
     }
 
     public Optional<User> get() {
-        return authenticationContext.getAuthenticatedUser(DefaultOidcUser.class)
-                .map(oidcUser -> new User(oidcUser.getSubject()));
+        return this.authenticationContext.getAuthenticatedUser(DefaultOidcUser.class)
+                                         .map(oidcUser -> new User(oidcUser.getSubject()));
     }
 }

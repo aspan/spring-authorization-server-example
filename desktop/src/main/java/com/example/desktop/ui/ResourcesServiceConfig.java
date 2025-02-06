@@ -24,12 +24,18 @@ public class ResourcesServiceConfig {
 
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties oAuth2ClientProperties) {
-        var clientRegistrations = List.copyOf(new OAuth2ClientPropertiesMapper(oAuth2ClientProperties)
-                                                      .asClientRegistrations()
-                                                      .values()
+        var clientRegistrations = List.copyOf(
+                new OAuth2ClientPropertiesMapper(oAuth2ClientProperties)
+                        .asClientRegistrations()
+                        .values()
         );
         return new InMemoryClientRegistrationRepository(clientRegistrations);
 
+    }
+
+    @Bean
+    OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {
+        return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository);
     }
 
     @Bean
@@ -58,10 +64,5 @@ public class ResourcesServiceConfig {
                                               ))
                                       .build()
                                       .createClient(ResourcesService.class);
-    }
-
-    @Bean
-    OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {
-        return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository);
     }
 }

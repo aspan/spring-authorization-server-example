@@ -12,7 +12,7 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 
 public class JavaFxApplication extends Application {
-    ConfigurableApplicationContext context;
+    private ConfigurableApplicationContext context;
 
     @Override
     public void init() {

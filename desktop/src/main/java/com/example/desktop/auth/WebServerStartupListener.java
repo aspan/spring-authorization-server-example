@@ -19,6 +19,6 @@ public class WebServerStartupListener implements ApplicationListener<ServletWebS
     public void onApplicationEvent(ServletWebServerInitializedEvent event) {
         var url = "http://127.0.0.1:" + event.getWebServer().getPort();
         LOGGER.debug("URL: {}", url);
-        application.url().complete(url);
+        this.application.url().complete(url);
     }
 }

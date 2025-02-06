@@ -24,20 +24,20 @@ public class AuthenticationService {
         this.authorizedClientService = authorizedClientService;
     }
 
-    public void authenticate(Consumer<String> consumer, Consumer<Authentication> authenticationConsumer, Runnable failureRunnable) {
+    public void authenticate(Consumer<String> loginUrlHandler, Consumer<Authentication> authenticationSuccessHandler, Runnable failureHandler) {
         var securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
         var authServerApplication = new AuthenticationServerApplication();
         try {
-            var url = authServerApplication.start(authorizedClientService).get(10, TimeUnit.SECONDS);
-            consumer.accept(url);
+            var url = authServerApplication.start(this.authorizedClientService).get(10, TimeUnit.SECONDS);
+            loginUrlHandler.accept(url);
         } catch (Exception e) {
-            authServerApplication.stop();
             LOGGER.error(e.getMessage(), e);
-            failureRunnable.run();
+            failureHandler.run();
+            authServerApplication.stop();
             return;
         }
         var authenticationFuture = authServerApplication.authenticate();
-        executorService.submit(() -> {
+        this.executorService.submit(() -> {
             try {
                 var authentication = authenticationFuture.get(1, TimeUnit.MINUTES);
                 Thread.sleep(10L);
@@ -45,11 +45,11 @@ public class AuthenticationService {
                 SecurityContextHolder.setContextHolderStrategy(securityContextHolderStrategy);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 LOGGER.debug("Authentication completed {}", SecurityContextHolder.getContext().getAuthentication());
-                authenticationConsumer.accept(authentication);
+                authenticationSuccessHandler.accept(authentication);
             } catch (Exception e) {
                 LOGGER.error("Login failed with exception", e);
                 authServerApplication.stop();
-                failureRunnable.run();
+                failureHandler.run();
             }
         });
     }

@@ -1,4 +1,4 @@
 @NonNullApi
-package com.example.vaadin.services;
+package com.example.hilla.services;
 
 import org.springframework.lang.NonNullApi;

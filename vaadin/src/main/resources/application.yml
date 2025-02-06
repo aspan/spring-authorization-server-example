@@ -1,5 +1,6 @@
 debug: true
 server:
+  address: 127.0.0.1
   port: 8083
 
 logging:
@@ -31,6 +32,6 @@ spring:
     check-template-location: false
 
 vaadin:
-  launch-browser: true
-  allowed-packages: com.vaadin,org.vaadin,com.example.application
+  launch-browser: false
+  allowed-packages: com.vaadin,org.vaadin,com.example.vaadin
 

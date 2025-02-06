@@ -1,4 +1,4 @@
-package com.example.vaadin.security;
+package com.example.hilla.security;
 
 public record User(String username) {
 }

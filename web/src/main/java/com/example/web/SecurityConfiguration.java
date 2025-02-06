@@ -68,7 +68,7 @@ public class SecurityConfiguration {
                 )
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .logout(l -> l
-                                .logoutSuccessHandler(oidcLogoutSuccessHandler())
+                        .logoutSuccessHandler(oidcLogoutSuccessHandler())
                 )
                 .oauth2Login(withDefaults())
                 .build();
@@ -77,10 +77,10 @@ public class SecurityConfiguration {
     @Bean
     WebClient webClient(OAuth2AuthorizedClientManager authorizedClientManager) {
         return WebClient.builder()
-                .apply(
-                        new ServletOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager)
-                                .oauth2Configuration())
-                .build();
+                        .apply(
+                                new ServletOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager)
+                                        .oauth2Configuration())
+                        .build();
     }
 
     @Bean
@@ -92,9 +92,9 @@ public class SecurityConfiguration {
                 authorizedClientRepository);
         authorizedClientManager.setAuthorizedClientProvider(
                 OAuth2AuthorizedClientProviderBuilder.builder()
-                        .authorizationCode()
-                        .refreshToken()
-                        .build());
+                                                     .authorizationCode()
+                                                     .refreshToken()
+                                                     .build());
         return authorizedClientManager;
     }
 

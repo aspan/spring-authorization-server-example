@@ -28,8 +28,6 @@ public class UiController implements StageAware {
     @FXML
     public Label resourcesLabel;
 
-    private WebView webView;
-
     public UiController(AuthenticationService authenticationService, ResourcesService resourcesService) {
         this.authenticationService = authenticationService;
         this.resourcesService = resourcesService;
@@ -40,16 +38,14 @@ public class UiController implements StageAware {
         final var dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(getStage());
-        webView = new WebView();
-        webView.getEngine().getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> LOGGER.info("State changed to {}, url = {}", newState, webView.getEngine().getLocation()));
+        final var webView = new WebView();
+        webView.getEngine().getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> LOGGER.debug("State changed to {}, url = {}", newState, webView.getEngine().getLocation()));
         webView.getEngine().getLoadWorker().exceptionProperty().addListener((ov, t, t1) -> LOGGER.error("Received exception", t1));
         this.login.setOnAction(event -> {
-            authenticationService.authenticate(
+            this.authenticationService.authenticate(
                     url -> {
                         webView.getEngine().load(url);
-                        VBox dialogVbox = new VBox(20, webView);
-                        Scene dialogScene = new Scene(dialogVbox, 640, 480);
-                        dialog.setScene(dialogScene);
+                        dialog.setScene(new Scene(new VBox(20, webView), 640, 480));
                         dialog.show();
                     },
                     authentication -> {
@@ -57,17 +53,17 @@ public class UiController implements StageAware {
                             Thread.sleep(1000L);
                         } catch (InterruptedException ignored) {
                         }
-                        Platform.runLater(dialog::close);
                         Platform.runLater(() -> {
-                            login.setDisable(true);
-                            label.setText(authentication.getName());
+                            dialog.close();
+                            this.login.setDisable(true);
+                            this.label.setText(authentication.getName());
+                            this.resourcesLabel.setText(String.join(", ", this.resourcesService.getResources()));
                         });
-                        Platform.runLater(() -> resourcesLabel.setText(String.join(", ", resourcesService.getResources())));
                     },
                     () -> {
                         Platform.runLater(() -> {
                             dialog.close();
-                            label.setText("Login failed");
+                            this.label.setText("Login failed");
                         });
                     });
         });
@@ -79,6 +75,6 @@ public class UiController implements StageAware {
     }
 
     public Stage getStage() {
-        return stage;
+        return this.stage;
     }
 }

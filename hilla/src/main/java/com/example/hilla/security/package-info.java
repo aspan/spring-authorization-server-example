@@ -1,4 +1,4 @@
 @NonNullApi
-package com.example.vaadin.security;
+package com.example.hilla.security;
 
 import org.springframework.lang.NonNullApi;

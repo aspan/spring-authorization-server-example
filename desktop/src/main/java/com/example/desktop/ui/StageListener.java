@@ -32,22 +32,22 @@ public class StageListener implements ApplicationListener<StageReadyEvent> {
     public void onApplicationEvent(StageReadyEvent event) {
         try {
             var stage = event.getStage();
-            var url = fxml.getURL();
+            var url = this.fxml.getURL();
             var fxmlLoader = new FXMLLoader(
                     url,
                     null,
                     null,
-                    c ->{
-                        var controller = applicationContext.getBean(c);
+                    c -> {
+                        var controller = this.applicationContext.getBean(c);
                         if (controller instanceof StageAware stageAware) {
                             stageAware.setStage(stage);
                         }
                         return controller;
-                });
+                    });
             var root = (Parent) fxmlLoader.load();
             var scene = new Scene(root);
             stage.setScene(scene);
-            stage.setTitle(applicationName);
+            stage.setTitle(this.applicationName);
             stage.show();
         } catch (IOException e) {
             throw new RuntimeException(e);

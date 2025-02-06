@@ -2,9 +2,6 @@ package com.example.vaadin.views;
 
 import jakarta.annotation.security.PermitAll;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
-
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;

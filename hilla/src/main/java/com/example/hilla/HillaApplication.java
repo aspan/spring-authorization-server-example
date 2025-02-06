@@ -1,4 +1,4 @@
-package com.example.vaadin;
+package com.example.hilla;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,8 +9,9 @@ import com.vaadin.flow.theme.Theme;
 @SpringBootApplication
 @Theme(value = "my-app")
 public class HillaApplication implements AppShellConfigurator {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         SpringApplication.run(HillaApplication.class, args);
     }
+
 }
 

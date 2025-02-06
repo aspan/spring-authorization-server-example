@@ -2,7 +2,7 @@
   <configuration default="false" name="HillaApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
     <module name="hilla" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.vaadin.HillaApplication" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.hilla.HillaApplication" />
     <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
     <extension name="com.fapiko.jetbrains.plugins.better_direnv.runconfigs.IdeaRunConfigurationExtension">
       <option name="DIRENV_ENABLED" value="false" />

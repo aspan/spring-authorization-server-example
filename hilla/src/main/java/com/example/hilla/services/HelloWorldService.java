@@ -1,4 +1,4 @@
-package com.example.vaadin.services;
+package com.example.hilla.services;
 
 import org.springframework.stereotype.Service;
 

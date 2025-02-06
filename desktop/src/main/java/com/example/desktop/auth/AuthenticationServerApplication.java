@@ -16,28 +16,28 @@ public class AuthenticationServerApplication {
     private final CompletableFuture<String> url = new CompletableFuture<>();
 
     public CompletableFuture<Authentication> authenticate() {
-        if (applicationContext == null) {
+        if (this.applicationContext == null) {
             throw new IllegalStateException("applicationContext is null");
         }
-        return applicationContext.getBean(CompletableFutureSecurityContextHolderStrategy.class).getAuthenticationFuture();
+        return this.applicationContext.getBean(CompletableFutureSecurityContextHolderStrategy.class).getAuthenticationFuture();
     }
 
     public CompletableFuture<String> start(OAuth2AuthorizedClientService authorizedClientService) {
-        applicationContext = new SpringApplicationBuilder(AuthenticationServerApplication.class)
+        this.applicationContext = new SpringApplicationBuilder(AuthenticationServerApplication.class)
                 .initializers((ApplicationContextInitializer<GenericApplicationContext>) ac -> {
                     ac.registerBean(OAuth2AuthorizedClientService.class, () -> authorizedClientService);
                 })
                 .run();
-        return applicationContext.getBean(AuthenticationServerApplication.class).url();
+        return this.applicationContext.getBean(AuthenticationServerApplication.class).url();
     }
 
     CompletableFuture<String> url() {
-        return url;
+        return this.url;
     }
 
     public void stop() {
-        if (applicationContext != null) {
-            applicationContext.close();
+        if (this.applicationContext != null) {
+            this.applicationContext.close();
         }
     }
 }

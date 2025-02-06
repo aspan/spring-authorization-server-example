@@ -17,15 +17,15 @@ public class CompletableFutureSecurityContextHolderStrategy implements SecurityC
 
     @Override
     public void clearContext() {
-        securityContext = null;
+        this.securityContext = null;
     }
 
     @Override
     public SecurityContext getContext() {
-        if (securityContext == null) {
-            securityContext = createEmptyContext();
+        if (this.securityContext == null) {
+            this.securityContext = createEmptyContext();
         }
-        return securityContext;
+        return this.securityContext;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class CompletableFutureSecurityContextHolderStrategy implements SecurityC
         Assert.notNull(context, "SecurityContext must not be null");
         var authentication = context.getAuthentication();
         if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
-            authenticationFuture.complete(authentication);
+            this.authenticationFuture.complete(authentication);
         }
         this.securityContext = context;
     }
@@ -44,6 +44,6 @@ public class CompletableFutureSecurityContextHolderStrategy implements SecurityC
     }
 
     public CompletableFuture<Authentication> getAuthenticationFuture() {
-        return authenticationFuture;
+        return this.authenticationFuture;
     }
 }
