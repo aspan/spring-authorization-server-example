@@ -93,6 +93,7 @@
         <module>resource</module>
         <module>vaadin</module>
         <module>web</module>
+        <module>desktop</module>
     </modules>
 
     <repositories>

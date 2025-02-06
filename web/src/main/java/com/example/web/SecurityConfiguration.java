@@ -49,6 +49,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(a -> a
                         .requestMatchers(
                                 new AntPathRequestMatcher("/"),
+                                new AntPathRequestMatcher("/apple-touch-icon.png"),
+                                new AntPathRequestMatcher("/apple-touch-icon-precomposed.png"),
                                 new AntPathRequestMatcher("/login/**"),
                                 new AntPathRequestMatcher("/oauth2/**"),
                                 new AntPathRequestMatcher("/index.html"),
