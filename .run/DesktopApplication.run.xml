@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="DesktopApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <option name="ENABLE_JMX_AGENT" value="false" />
+    <module name="desktop" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.desktop.ui.DesktopApplication" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.example.desktop.ui.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
