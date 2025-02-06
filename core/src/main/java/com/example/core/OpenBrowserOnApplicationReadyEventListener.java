@@ -1,4 +1,4 @@
-package com.example.web;
+package com.example.core;
 
 import java.awt.Desktop;
 import java.io.IOException;

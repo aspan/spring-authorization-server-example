@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -21,8 +22,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.server.ResponseStatusException;
 
-@SpringBootApplication
+import com.example.core.OpenBrowserConfiguration;
+
+@Import(OpenBrowserConfiguration.class)
 @RestController
+@SpringBootApplication
 public class WebApplication {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebApplication.class);
     private final WebClient webClient;

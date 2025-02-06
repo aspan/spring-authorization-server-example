@@ -19,6 +19,7 @@
     <properties>
         <bootstrap.version>5.3.3</bootstrap.version>
         <java.version>23</java.version>
+        <javafx.version>23.0.2</javafx.version>
         <jquery.version>3.7.1</jquery.version>
         <js-cookie.version>3.0.1</js-cookie.version>
         <logback.version>1.5.16</logback.version>
@@ -68,6 +69,24 @@
             </dependency>
 
             <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-controls</artifactId>
+                <version>${javafx.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-fxml</artifactId>
+                <version>${javafx.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-web</artifactId>
+                <version>${javafx.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.webjars</groupId>
                 <artifactId>bootstrap</artifactId>
                 <version>${bootstrap.version}</version>
@@ -88,12 +107,13 @@
     </dependencyManagement>
 
     <modules>
+        <module>core</module>
         <module>authorization-server</module>
+        <module>desktop</module>
         <module>hilla</module>
         <module>resource</module>
         <module>vaadin</module>
         <module>web</module>
-        <module>desktop</module>
     </modules>
 
     <repositories>
