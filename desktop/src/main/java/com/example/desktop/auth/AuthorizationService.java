@@ -11,7 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 
 @SpringBootApplication
-public class AuthenticationServerApplication {
+public class AuthorizationService {
     private ConfigurableApplicationContext applicationContext;
     private final CompletableFuture<String> url = new CompletableFuture<>();
 
@@ -23,12 +23,12 @@ public class AuthenticationServerApplication {
     }
 
     public CompletableFuture<String> start(OAuth2AuthorizedClientService authorizedClientService) {
-        this.applicationContext = new SpringApplicationBuilder(AuthenticationServerApplication.class)
+        this.applicationContext = new SpringApplicationBuilder(AuthorizationService.class)
                 .initializers((ApplicationContextInitializer<GenericApplicationContext>) ac -> {
                     ac.registerBean(OAuth2AuthorizedClientService.class, () -> authorizedClientService);
                 })
                 .run();
-        return this.applicationContext.getBean(AuthenticationServerApplication.class).url();
+        return this.applicationContext.getBean(AuthorizationService.class).url();
     }
 
     CompletableFuture<String> url() {

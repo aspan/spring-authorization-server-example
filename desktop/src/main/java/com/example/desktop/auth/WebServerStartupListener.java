@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class WebServerStartupListener implements ApplicationListener<ServletWebServerInitializedEvent> {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebServerStartupListener.class);
-    private final AuthenticationServerApplication application;
+    private final AuthorizationService application;
 
-    public WebServerStartupListener(AuthenticationServerApplication application) {
+    public WebServerStartupListener(AuthorizationService application) {
         this.application = application;
     }
 
