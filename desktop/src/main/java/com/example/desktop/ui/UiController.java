@@ -22,9 +22,9 @@ public class UiController implements StageAware {
     private Stage stage;
 
     @FXML
-    public Button login;
+    public Button loginLogoutButton;
     @FXML
-    public Label label;
+    public Label usernameLabel;
     @FXML
     public Label resourcesLabel;
 
@@ -43,12 +43,12 @@ public class UiController implements StageAware {
         final var dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(getStage());
-        dialog.setOnCloseRequest(e -> Platform.runLater(authenticationService::cancel));
+        dialog.setOnCloseRequest(e -> Platform.runLater(this.authenticationService::cancel));
         final var webView = new WebView();
         dialog.setScene(new Scene(new VBox(20, webView), 640, 480));
         webView.getEngine().getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> LOGGER.debug("State changed to {}, url = {}", newState, webView.getEngine().getLocation()));
         webView.getEngine().getLoadWorker().exceptionProperty().addListener((ov, t, t1) -> LOGGER.error("Received exception", t1));
-        this.login.setOnAction(event -> {
+        this.loginLogoutButton.setOnAction(event -> {
             if (!loggedIn) {
                 this.authenticationService.authenticate(
                         url -> {
@@ -64,22 +64,22 @@ public class UiController implements StageAware {
                             Platform.runLater(() -> {
                                 dialog.close();
                                 this.loggedIn = true;
-                                this.login.setText("Logout");
-                                this.label.setText(authentication.getName());
-                                this.resourcesLabel.setText(String.join(", ", this.resourcesService.getResources()));
+                                this.loginLogoutButton.setText("Logout");
+                                this.usernameLabel.setText("Username: " + authentication.getName());
+                                this.resourcesLabel.setText("Resources: " + String.join(", ", this.resourcesService.getResources()));
                             });
                         },
                         () -> {
                             Platform.runLater(() -> {
                                 dialog.close();
-                                this.label.setText("Login failed");
+                                this.usernameLabel.setText("Login failed");
                             });
                         });
             } else {
                 this.authenticationService.logout();
-                this.login.setText("Login");
-                this.label.setText("Label");
-                this.resourcesLabel.setText("Resources");
+                this.loginLogoutButton.setText("Login");
+                this.usernameLabel.setText("Logged out");
+                this.resourcesLabel.setText("No resources loaded");
                 this.loggedIn = false;
             }
         });
