@@ -1,13 +1,13 @@
 package com.example.desktop.ui;
 
+import java.net.CookieHandler;
+import java.net.CookieManager;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextHolderStrategy;
 
 import javafx.application.Application;
 
@@ -21,5 +21,12 @@ public class DesktopApplication {
     @Bean
     ExecutorService executorService() {
         return Executors.newVirtualThreadPerTaskExecutor();
+    }
+
+    @Bean
+    CookieManager cookieManager() {
+        var cookieManager = new CookieManager();
+        CookieHandler.setDefault(cookieManager);
+        return cookieManager;
     }
 }

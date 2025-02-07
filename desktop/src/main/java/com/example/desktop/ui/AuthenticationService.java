@@ -1,5 +1,6 @@
 package com.example.desktop.ui;
 
+import java.net.CookieManager;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -17,12 +18,14 @@ import com.example.desktop.auth.AuthorizationService;
 @Component
 public class AuthenticationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationService.class);
+    private final CookieManager cookieManager;
     private final ExecutorService executorService;
     private final OAuth2AuthorizedClientService authorizedClientService;
     private AuthorizationService authorizationService;
     private Future<?> futureAuthentication;
 
-    public AuthenticationService(ExecutorService executorService, OAuth2AuthorizedClientService authorizedClientService) {
+    public AuthenticationService(ExecutorService executorService, OAuth2AuthorizedClientService authorizedClientService, CookieManager cookieManager) {
+        this.cookieManager = cookieManager;
         this.executorService = executorService;
         this.authorizedClientService = authorizedClientService;
     }
@@ -46,15 +49,20 @@ public class AuthenticationService {
                 Thread.sleep(10L);
                 authorizationService.stop();
                 SecurityContextHolder.setContextHolderStrategy(securityContextHolderStrategy);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                LOGGER.debug("Authentication completed {}", SecurityContextHolder.getContext().getAuthentication());
+                setAuthentication(authentication);
+                LOGGER.debug("Authentication completed {}", authentication);
                 authenticationSuccessHandler.accept(authentication);
             } catch (Exception e) {
                 LOGGER.error("Login failed with exception", e);
                 authorizationService.stop();
+                SecurityContextHolder.setContextHolderStrategy(securityContextHolderStrategy);
                 failureHandler.run();
             }
         });
+    }
+
+    void setAuthentication(Authentication authentication) {
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     public Authentication getAuthentication() {
@@ -63,9 +71,10 @@ public class AuthenticationService {
 
     public void logout() {
         SecurityContextHolder.clearContext();
+        cookieManager.getCookieStore().removeAll();
     }
 
-    public void stop() {
+    public void cancel() {
         if (futureAuthentication != null) {
             futureAuthentication.cancel(true);
         }

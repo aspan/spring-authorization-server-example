@@ -1,8 +1,5 @@
 package com.example.desktop.ui;
 
-import java.net.CookieHandler;
-import java.net.CookieManager;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -22,7 +19,6 @@ public class UiController implements StageAware {
     private static final Logger LOGGER = LoggerFactory.getLogger(UiController.class);
     private final AuthenticationService authenticationService;
     private final ResourcesService resourcesService;
-    private final CookieManager cookieManager = new CookieManager();
     private Stage stage;
 
     @FXML
@@ -40,7 +36,6 @@ public class UiController implements StageAware {
         if (authenticationService.getAuthentication() != null) {
             loggedIn = true;
         }
-        CookieHandler.setDefault(cookieManager);
     }
 
     @FXML
@@ -48,8 +43,9 @@ public class UiController implements StageAware {
         final var dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(getStage());
-        dialog.setOnCloseRequest(e -> Platform.runLater(authenticationService::stop));
+        dialog.setOnCloseRequest(e -> Platform.runLater(authenticationService::cancel));
         final var webView = new WebView();
+        dialog.setScene(new Scene(new VBox(20, webView), 640, 480));
         webView.getEngine().getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> LOGGER.debug("State changed to {}, url = {}", newState, webView.getEngine().getLocation()));
         webView.getEngine().getLoadWorker().exceptionProperty().addListener((ov, t, t1) -> LOGGER.error("Received exception", t1));
         this.login.setOnAction(event -> {
@@ -57,13 +53,13 @@ public class UiController implements StageAware {
                 this.authenticationService.authenticate(
                         url -> {
                             webView.getEngine().load(url);
-                            dialog.setScene(new Scene(new VBox(20, webView), 640, 480));
                             dialog.show();
                         },
                         authentication -> {
                             try {
                                 Thread.sleep(1000L);
-                            } catch (InterruptedException ignored) {
+                            } catch (InterruptedException e) {
+                                Thread.currentThread().interrupt();
                             }
                             Platform.runLater(() -> {
                                 dialog.close();
@@ -81,7 +77,6 @@ public class UiController implements StageAware {
                         });
             } else {
                 this.authenticationService.logout();
-                cookieManager.getCookieStore().removeAll();
                 this.login.setText("Login");
                 this.label.setText("Label");
                 this.resourcesLabel.setText("Resources");
