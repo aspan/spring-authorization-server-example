@@ -13,7 +13,7 @@ import org.springframework.util.Assert;
 @Component
 public class CompletableFutureSecurityContextHolderStrategy implements SecurityContextHolderStrategy {
     private SecurityContext securityContext;
-    private final CompletableFuture<Authentication> authenticationFuture = new CompletableFuture<>();
+    private CompletableFuture<Authentication> authenticationFuture;
 
     @Override
     public void clearContext() {
@@ -33,7 +33,10 @@ public class CompletableFutureSecurityContextHolderStrategy implements SecurityC
         Assert.notNull(context, "SecurityContext must not be null");
         var authentication = context.getAuthentication();
         if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
-            this.authenticationFuture.complete(authentication);
+            if (this.authenticationFuture != null) {
+                this.authenticationFuture.complete(authentication);
+                this.authenticationFuture = null;
+            }
         }
         this.securityContext = context;
     }
@@ -44,6 +47,9 @@ public class CompletableFutureSecurityContextHolderStrategy implements SecurityC
     }
 
     public CompletableFuture<Authentication> getAuthenticationFuture() {
+        if (this.authenticationFuture == null) {
+            this.authenticationFuture = new CompletableFuture<>();
+        }
         return this.authenticationFuture;
     }
 }
