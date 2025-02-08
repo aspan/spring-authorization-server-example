@@ -69,10 +69,10 @@ public class UiController implements StageAware {
                                 this.resourcesLabel.setText("Resources: " + String.join(", ", this.resourcesService.getResources()));
                             });
                         },
-                        () -> {
+                        message -> {
                             Platform.runLater(() -> {
                                 dialog.close();
-                                this.usernameLabel.setText("Login failed");
+                                this.usernameLabel.setText(message);
                             });
                         });
             } else {
