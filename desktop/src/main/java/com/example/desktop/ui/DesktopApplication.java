@@ -1,5 +1,7 @@
 package com.example.desktop.ui;
 
+import static org.springframework.security.core.context.SecurityContextHolder.MODE_GLOBAL;
+
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.util.concurrent.ExecutorService;
@@ -14,7 +16,7 @@ import javafx.application.Application;
 @SpringBootApplication
 public class DesktopApplication {
     public static void main(String[] args) {
-        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_GLOBAL);
+        SecurityContextHolder.setStrategyName(MODE_GLOBAL);
         Application.launch(JavaFxApplication.class, args);
     }
 
