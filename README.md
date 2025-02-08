@@ -1,4 +1,4 @@
-# Spring Authorization Server Examples
+# Spring Authorization Server Example
 
 Example project to demonstrate how to integrate different
 clients with the Spring Authorization Server.
