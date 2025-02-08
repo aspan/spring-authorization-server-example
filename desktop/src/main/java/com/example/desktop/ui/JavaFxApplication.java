@@ -29,7 +29,7 @@ public class JavaFxApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        this.context.publishEvent(new StageReadyEvent(primaryStage));
+        this.context.publishEvent(new StageReadyEvent(primaryStage, LoginController.FXML));
     }
 
     @Override

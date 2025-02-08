@@ -6,10 +6,17 @@ import javafx.stage.Stage;
 
 public class StageReadyEvent extends ApplicationEvent {
     public Stage getStage() {
-        return (Stage) this.getSource();
+        return ((StageFxml) this.getSource()).stage();
     }
 
-    public StageReadyEvent(Stage stage) {
-        super(stage);
+    public String getFxml() {
+        return ((StageFxml) this.getSource()).fxml();
+    }
+
+    public StageReadyEvent(Stage stage, String location) {
+        super(new StageFxml(stage, location));
+    }
+
+    private record StageFxml(Stage stage, String fxml) {
     }
 }

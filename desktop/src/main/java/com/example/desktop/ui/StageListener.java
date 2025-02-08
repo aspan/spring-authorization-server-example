@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import javafx.fxml.FXMLLoader;
@@ -16,23 +15,20 @@ import javafx.scene.Scene;
 public class StageListener implements ApplicationListener<StageReadyEvent> {
     private final ApplicationContext applicationContext;
     private final String applicationName;
-    private final Resource fxml;
 
     public StageListener(
             ApplicationContext applicationContext,
-            @Value("${spring.application.name}") String applicationName,
-            @Value("classpath:/ui.fxml") Resource fxml
+            @Value("${spring.application.name}") String applicationName
     ) {
         this.applicationContext = applicationContext;
         this.applicationName = applicationName;
-        this.fxml = fxml;
     }
 
     @Override
     public void onApplicationEvent(StageReadyEvent event) {
         try {
             var stage = event.getStage();
-            var url = this.fxml.getURL();
+            var url = getClass().getResource("/" + event.getFxml());
             var fxmlLoader = new FXMLLoader(
                     url,
                     null,
