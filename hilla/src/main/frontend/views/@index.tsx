@@ -17,6 +17,7 @@ export default function HelloWorldView() {
     return (
         <VerticalLayout theme="spacing padding">
             <h1>Hello {auth.state.user?.username}!</h1>
+            <a href="http://localhost:9000/webauthn/register">Register passkey</a>
             <form id="logout" action="/logout" method="post">
                 <input type="hidden" name="_csrf" value={document.querySelector("meta[name='_csrf']")?.getAttribute("content") || ''}/>
                 <Button onClick={async () => (document.querySelector('#logout') as HTMLFormElement).submit()}>Logout</Button>

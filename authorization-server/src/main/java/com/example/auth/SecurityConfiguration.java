@@ -44,6 +44,12 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                         a ->
                                 a.anyRequest().authenticated())
+                .webAuthn(webAuthn ->
+                                  webAuthn
+                                          .rpName("Spring Security Relying Party")
+                                          .rpId("localhost")
+                                          .allowedOrigins("http://localhost:9000")
+                )
                 .formLogin(withDefaults())
                 .build();
     }

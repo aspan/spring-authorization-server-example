@@ -3,6 +3,7 @@ package com.example.vaadin.views;
 import jakarta.annotation.security.PermitAll;
 
 import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
@@ -22,8 +23,8 @@ public class HelloWorldView extends VerticalLayout {
     public HelloWorldView(AuthenticationContext authenticationContext) {
         add(new H1("Hello %s!".formatted(authenticationContext.getPrincipalName().map(Object::toString).orElse(""))));
 
-        var logoutButton = new Button("Logout", _ -> authenticationContext.logout());
-        add(logoutButton);
+        add(new Button("Register passkey", _ -> UI.getCurrent().getPage().open("http://localhost:9000/webauthn/register", "_self")));
+        add(new Button("Logout", _ -> authenticationContext.logout()));
 
         setAlignItems(Alignment.CENTER);
 
