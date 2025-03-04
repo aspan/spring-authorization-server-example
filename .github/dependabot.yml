@@ -13,5 +13,5 @@ updates:
       timezone: "Europe/Stockholm"
     target-branch: "main"
     ignore:
-      - dependency-name: "org.openjfx.*"
-        versions: [ "25.x" ]
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
