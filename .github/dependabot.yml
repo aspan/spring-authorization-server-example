@@ -14,4 +14,4 @@ updates:
     target-branch: "main"
     ignore:
       - dependency-name: "org.openjfx.*"
-        versions: [ "25.*" ]
+        versions: [ "25.x" ]
