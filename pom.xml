@@ -18,7 +18,7 @@
 
     <properties>
         <bootstrap.version>5.3.3</bootstrap.version>
-        <java.version>23</java.version>
+        <java.version>24</java.version>
         <javafx.version>23.0.2</javafx.version>
         <jquery.version>3.7.1</jquery.version>
         <js-cookie.version>3.0.1</js-cookie.version>
