@@ -1,7 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="WebApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
     <option name="ALTERNATIVE_JRE_PATH" value="temurin-23" />
-    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <module name="web" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.web.WebApplication" />
     <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
