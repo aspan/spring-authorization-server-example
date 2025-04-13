@@ -17,7 +17,7 @@
     <url/>
 
     <properties>
-        <bootstrap.version>5.3.3</bootstrap.version>
+        <bootstrap.version>5.3.5</bootstrap.version>
         <java.version>24</java.version>
         <javafx.version>24</javafx.version>
         <jquery.version>3.7.1</jquery.version>
