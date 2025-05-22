@@ -23,7 +23,7 @@
         <jquery.version>3.7.1</jquery.version>
         <js-cookie.version>3.0.1</js-cookie.version>
         <nimbus-jose-jwt.version>10.3</nimbus-jose-jwt.version>
-        <vaadin.version>24.7.4</vaadin.version>
+        <vaadin.version>24.7.5</vaadin.version>
         <webauthn4j-core.version>0.29.2.RELEASE</webauthn4j-core.version>
     </properties>
 
@@ -121,22 +121,4 @@
         <module>vaadin</module>
         <module>web</module>
     </modules>
-
-    <repositories>
-        <repository>
-            <id>vaadin-prereleases</id>
-            <url>
-                https://maven.vaadin.com/vaadin-prereleases/
-            </url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>vaadin-prereleases</id>
-            <url>
-                https://maven.vaadin.com/vaadin-prereleases/
-            </url>
-        </pluginRepository>
-    </pluginRepositories>
 </project>
