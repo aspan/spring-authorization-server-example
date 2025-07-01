@@ -19,7 +19,7 @@
     <properties>
         <bootstrap.version>5.3.7</bootstrap.version>
         <java.version>24</java.version>
-        <javafx.version>24.0.1</javafx.version>
+        <javafx.version>24.0.2-ea+1</javafx.version>
         <jquery.version>3.7.1</jquery.version>
         <js-cookie.version>3.0.1</js-cookie.version>
         <nimbus-jose-jwt.version>10.3</nimbus-jose-jwt.version>
