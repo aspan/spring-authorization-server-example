@@ -22,7 +22,7 @@
         <javafx.version>24.0.2-ea+1</javafx.version>
         <jquery.version>3.7.1</jquery.version>
         <js-cookie.version>3.0.1</js-cookie.version>
-        <nimbus-jose-jwt.version>10.3</nimbus-jose-jwt.version>
+        <nimbus-jose-jwt.version>10.3.1</nimbus-jose-jwt.version>
         <vaadin.version>24.8.0</vaadin.version>
         <webauthn4j-core.version>0.29.4.RELEASE</webauthn4j-core.version>
     </properties>
