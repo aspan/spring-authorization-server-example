@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 
 @Component
 @Scope(SCOPE_PROTOTYPE)
+@SuppressWarnings("this-escape")
 public class LoginController extends AbstractController {
     public static final String FXML = "login.fxml";
 

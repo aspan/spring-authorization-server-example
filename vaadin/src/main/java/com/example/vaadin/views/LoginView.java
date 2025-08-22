@@ -1,6 +1,8 @@
 package com.example.vaadin.views;
 
 
+import java.io.Serial;
+
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
@@ -8,13 +10,14 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import com.vaadin.flow.theme.lumo.LumoUtility;
 
 @Route("login")
 @PageTitle("Login")
 @AnonymousAllowed
+@SuppressWarnings("this-escape")
 public class LoginView extends VerticalLayout {
-
+    @Serial
+    private static final long serialVersionUID = 1L;
     private static final String OAUTH_URL = "/oauth2/authorization/vaadin-client-oidc";
 
     public LoginView() {

@@ -1,5 +1,7 @@
 package com.example.hilla;
 
+import java.io.Serial;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
@@ -10,6 +12,9 @@ import com.vaadin.flow.component.page.AppShellConfigurator;
 @SpringBootApplication
 @Import(OpenBrowserConfiguration.class)
 public class HillaApplication implements AppShellConfigurator {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     public static void main(String[] args) throws Exception {
         SpringApplication.run(HillaApplication.class, args);
     }
