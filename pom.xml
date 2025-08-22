@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.5</version>
+        <version>4.0.0-M2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
@@ -23,8 +23,7 @@
         <jquery.version>3.7.1</jquery.version>
         <js-cookie.version>3.0.1</js-cookie.version>
         <nimbus-jose-jwt.version>10.4.2</nimbus-jose-jwt.version>
-        <vaadin.version>24.8.6</vaadin.version>
-        <webauthn4j-core.version>0.29.5.RELEASE</webauthn4j-core.version>
+        <vaadin.version>25.0.0-alpha7</vaadin.version>
     </properties>
 
     <licenses>
@@ -66,12 +65,6 @@
                 <version>${vaadin.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>com.webauthn4j</groupId>
-                <artifactId>webauthn4j-core</artifactId>
-                <version>${webauthn4j-core.version}</version>
             </dependency>
 
             <dependency>
@@ -121,4 +114,22 @@
         <module>vaadin</module>
         <module>web</module>
     </modules>
+
+    <repositories>
+        <repository>
+            <id>vaadin-prereleases</id>
+            <url>
+                https://maven.vaadin.com/vaadin-prereleases/
+            </url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>vaadin-prereleases</id>
+            <url>
+                https://maven.vaadin.com/vaadin-prereleases/
+            </url>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
