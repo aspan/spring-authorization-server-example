@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 public class SecurityConfiguration {
@@ -15,12 +14,12 @@ public class SecurityConfiguration {
         return http
                 .authorizeHttpRequests(a -> a
                         .requestMatchers(
-                                new AntPathRequestMatcher("/apple-touch-icon.png"),
-                                new AntPathRequestMatcher("/apple-touch-icon-precomposed.png"),
-                                new AntPathRequestMatcher("/login/**"),
-                                new AntPathRequestMatcher("/oauth2/**"),
-                                new AntPathRequestMatcher("/favicon.ico"),
-                                new AntPathRequestMatcher("/error")).permitAll()
+                                "/apple-touch-icon.png",
+                                "/apple-touch-icon-precomposed.png",
+                                "/login/**",
+                                "/oauth2/**",
+                                "/favicon.ico",
+                                "/error").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(withDefaults())

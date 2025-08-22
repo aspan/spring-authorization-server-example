@@ -27,7 +27,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -48,15 +47,15 @@ public class SecurityConfiguration {
         return http
                 .authorizeHttpRequests(a -> a
                         .requestMatchers(
-                                new AntPathRequestMatcher("/"),
-                                new AntPathRequestMatcher("/apple-touch-icon.png"),
-                                new AntPathRequestMatcher("/apple-touch-icon-precomposed.png"),
-                                new AntPathRequestMatcher("/login/**"),
-                                new AntPathRequestMatcher("/oauth2/**"),
-                                new AntPathRequestMatcher("/index.html"),
-                                new AntPathRequestMatcher("/favicon.ico"),
-                                new AntPathRequestMatcher("/error"),
-                                new AntPathRequestMatcher("/webjars/**")).permitAll()
+                                "/",
+                                "/apple-touch-icon.png",
+                                "/apple-touch-icon-precomposed.png",
+                                "/login/**",
+                                "/oauth2/**",
+                                "/index.html",
+                                "/favicon.ico",
+                                "/error",
+                                "/webjars/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(e -> e

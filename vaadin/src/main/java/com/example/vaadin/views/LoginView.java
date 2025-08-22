@@ -22,7 +22,6 @@ public class LoginView extends VerticalLayout {
         add(new H1("Login"));
         add(new Paragraph("Login example for Spring Security OAuth 2.0 Authentication Server:"));
         Anchor loginLink = new Anchor(OAUTH_URL, "Login with OAuth 2.0");
-        loginLink.addClassName(LumoUtility.FontSize.XLARGE);
         loginLink.setRouterIgnore(true);
         add(loginLink);
     }
