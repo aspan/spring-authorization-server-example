@@ -7,6 +7,14 @@ server:
 spring:
   application:
     name: Authorization Server
+  datasource:
+    password: secret
+    url: jdbc:postgresql://localhost:32768/exampledatabase
+    username: exampleuser
+  docker:
+    compose:
+      lifecycle-management: start_only
+      file: ../docker-compose.yml
   security:
     oauth2:
       authorizationserver:
@@ -110,3 +118,10 @@ spring:
       roles:
         - USER
         - ADMIN
+  sql:
+    init:
+      continue-on-error: true
+      mode: always
+      schema-locations:
+        - classpath:oauth2-authorization-consent-schema.sql
+        - classpath:oauth2-authorization-schema.sql
