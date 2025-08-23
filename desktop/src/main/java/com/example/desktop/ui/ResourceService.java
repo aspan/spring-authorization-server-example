@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.web.service.annotation.GetExchange;
 
-public interface ResourcesService {
+public interface ResourceService {
     @GetExchange("/resources")
     List<String> getResources();
 }

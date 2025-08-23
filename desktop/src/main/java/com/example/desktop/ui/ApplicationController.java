@@ -16,22 +16,22 @@ import javafx.scene.control.ListView;
 public class ApplicationController extends AbstractController {
     public static final String FXML = "application.fxml";
     private final AuthenticationService authenticationService;
-    private final ResourcesService resourcesService;
+    private final ResourceService resourceService;
 
     @FXML
     public Label usernameLabel;
     @FXML
     private ListView<String> resourcesList;
 
-    public ApplicationController(AuthenticationService authenticationService, ResourcesService resourcesService) {
+    public ApplicationController(AuthenticationService authenticationService, ResourceService resourceService) {
         this.authenticationService = authenticationService;
-        this.resourcesService = resourcesService;
+        this.resourceService = resourceService;
     }
 
     @FXML
     public void initialize() {
         this.usernameLabel.setText("Username: " + authenticationService.getAuthentication().getName());
-        this.resourcesList.setItems(FXCollections.observableList(this.resourcesService.getResources()));
+        this.resourcesList.setItems(FXCollections.observableList(this.resourceService.getResources()));
     }
 
     public void logout(ActionEvent actionEvent) {

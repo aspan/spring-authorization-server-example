@@ -20,7 +20,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Configuration
 @EnableConfigurationProperties(OAuth2ClientProperties.class)
-public class ResourcesServiceConfig {
+public class ResourceServiceConfig {
 
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties oAuth2ClientProperties) {
@@ -39,8 +39,8 @@ public class ResourcesServiceConfig {
     }
 
     @Bean
-    public ResourcesService resourcesService(ClientRegistrationRepository clientRegistrationRepository,
-                                             OAuth2AuthorizedClientService authorizedClientService) {
+    public ResourceService resourcesService(ClientRegistrationRepository clientRegistrationRepository,
+                                            OAuth2AuthorizedClientService authorizedClientService) {
         var authorizedClientManager = new AuthorizedClientServiceOAuth2AuthorizedClientManager(
                 clientRegistrationRepository,
                 authorizedClientService);
@@ -63,6 +63,6 @@ public class ResourcesServiceConfig {
                                                                 .build()
                                               ))
                                       .build()
-                                      .createClient(ResourcesService.class);
+                                      .createClient(ResourceService.class);
     }
 }
