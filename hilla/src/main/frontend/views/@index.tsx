@@ -1,7 +1,7 @@
 import { ViewConfig } from '@vaadin/hilla-file-router/types.js';
 import { Signal, useSignal } from '@vaadin/hilla-react-signals';
 import { Button, HorizontalLayout, Notification, TextField, VerticalLayout } from '@vaadin/react-components';
-import { HelloWorldService, ResourcesService } from 'Frontend/generated/endpoints.js';
+import { HelloWorldService, ResourceEndpointService } from 'Frontend/generated/endpoints.js';
 import { useAuth } from 'Frontend/util/auth';
 import { useEffect } from 'react';
 
@@ -17,7 +17,7 @@ export default function HelloWorldView() {
   const resources: Signal<string[]> = useSignal([]);
 
   useEffect(() => {
-    ResourcesService.resources().then((value) => {
+    ResourceEndpointService.resources().then((value) => {
       resources.value = value;
     });
   }, []);

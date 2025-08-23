@@ -12,15 +12,15 @@ import com.vaadin.hilla.BrowserCallable;
 @BrowserCallable
 @PermitAll
 @Service
-public class ResourcesService {
-    private final ResourcesRemoteService resourcesRemoteService;
+public class ResourceEndpointService {
+    private final ResourceService resourceService;
 
-    public ResourcesService(ResourcesRemoteService resourcesRemoteService) {
-        this.resourcesRemoteService = resourcesRemoteService;
+    public ResourceEndpointService(ResourceService resourceService) {
+        this.resourceService = resourceService;
     }
 
     public List<String> resources() {
         System.out.println(SecurityContextHolder.getContext().getAuthentication());
-        return resourcesRemoteService.getResources();
+        return resourceService.getResources();
     }
 }

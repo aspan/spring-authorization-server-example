@@ -32,6 +32,10 @@ spring:
   mustache:
     check-template-location: false
 
+example:
+  client-registration-id: vaadin-client
+  resource-server-url: "http://127.0.0.1:8090"
+
 vaadin:
   launch-browser: false
   allowed-packages: com.vaadin,org.vaadin,com.example.vaadin

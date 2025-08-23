@@ -1,4 +1,4 @@
-package com.example.vaadin.service;
+package com.example.vaadin;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ import org.springframework.boot.security.oauth2.client.autoconfigure.OAuth2Clien
 import org.springframework.boot.security.oauth2.client.autoconfigure.OAuth2ClientPropertiesMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
@@ -20,12 +21,10 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
 import org.springframework.security.oauth2.client.web.client.OAuth2ClientHttpRequestInterceptor;
 import org.springframework.security.oauth2.client.web.client.SecurityContextHolderPrincipalResolver;
 import org.springframework.web.client.RestClient;
-import org.springframework.web.client.support.RestClientAdapter;
-import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Configuration
 @EnableConfigurationProperties(OAuth2ClientProperties.class)
-public class ResourcesRemoteServiceConfig {
+public class OAuth2ClientConfiguration {
 
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties oAuth2ClientProperties) {
@@ -64,22 +63,25 @@ public class ResourcesRemoteServiceConfig {
     }
 
     @Bean
-    public ResourcesRemoteService resourcesRemoteService(OAuth2AuthorizedClientManager authorizedClientManager,
-                                                         SecurityContextHolderStrategy securityContextHolderStrategy) {
+    public OAuth2ClientHttpRequestInterceptor oAuth2ClientHttpRequestInterceptor(
+            OAuth2AuthorizedClientManager authorizedClientManager,
+            SecurityContextHolderStrategy securityContextHolderStrategy,
+            Environment environment) {
         var interceptor = new OAuth2ClientHttpRequestInterceptor(authorizedClientManager);
-        interceptor.setClientRegistrationIdResolver(request -> "vaadin-client");
+        interceptor.setClientRegistrationIdResolver(request -> environment.getProperty("example.client-registration-id", "vaadin-client"));
         interceptor.setPrincipalResolver(new SecurityContextHolderPrincipalResolver(securityContextHolderStrategy));
+        return interceptor;
+    }
 
-        return HttpServiceProxyFactory.builderFor(
-                                              RestClientAdapter.create(
-                                                      RestClient.builder()
-                                                                .baseUrl("http://127.0.0.1:8090")
-                                                                .requestInterceptor(
-                                                                        interceptor
-                                                                )
-                                                                .build()
-                                              ))
-                                      .build()
-                                      .createClient(ResourcesRemoteService.class);
+    @Bean
+    public RestClient restClient(
+            OAuth2ClientHttpRequestInterceptor interceptor,
+            Environment environment) {
+        return RestClient.builder()
+                         .baseUrl(environment.getProperty("example.resource-server-url", "http://127.0.0.1:8090"))
+                         .requestInterceptor(
+                                 interceptor
+                         )
+                         .build();
     }
 }
