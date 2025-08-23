@@ -15,7 +15,7 @@ spring:
     oauth2:
       client:
         registration:
-          hilla-client-oidc:
+          hilla-client:
             provider: spring
             client-id: hilla-client
             client-secret: hilla
@@ -23,7 +23,8 @@ spring:
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope:
               - openid
-            client-name: hilla-client-oidc
+              - resources.read
+            client-name: hilla-client
         provider:
           spring:
             issuer-uri: http://localhost:9000

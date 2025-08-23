@@ -10,7 +10,7 @@ export default function LoginView() {
   return (
     <VerticalLayout theme="spacing padding" style={{ alignItems: 'center' }}>
       <h1>Login</h1>
-      <form id="login" action="/oauth2/authorization/hilla-client-oidc" method="get">
+      <form id="login" action="/oauth2/authorization/hilla-client" method="get">
         <Button onClick={async () => (document.querySelector('#login') as HTMLFormElement).submit()}>Login</Button>
       </form>
     </VerticalLayout>

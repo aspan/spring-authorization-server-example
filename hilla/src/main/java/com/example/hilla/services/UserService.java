@@ -9,11 +9,11 @@ import com.vaadin.hilla.Endpoint;
 
 @Endpoint
 @AnonymousAllowed
-public class UserEndpoint {
+public class UserService {
 
     private final AuthenticatedUser authenticatedUser;
 
-    public UserEndpoint(AuthenticatedUser authenticatedUser) {
+    public UserService(AuthenticatedUser authenticatedUser) {
         this.authenticatedUser = authenticatedUser;
     }
 

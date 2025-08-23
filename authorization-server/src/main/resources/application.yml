@@ -24,13 +24,14 @@ spring:
                 - refresh_token
                 - client_credentials
               redirect-uris:
-                - http://127.0.0.1:8084/login/oauth2/code/hilla-client-oidc
+                - http://127.0.0.1:8084/login/oauth2/code/hilla-client
               scopes:
                 - openid
                 - profile
                 - email
                 - phone
                 - address
+                - resources.read
               post-logout-redirect-uris:
                 - http://127.0.0.1:8084
             require-authorization-consent: false
