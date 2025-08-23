@@ -7,8 +7,10 @@ import org.springframework.boot.security.oauth2.client.autoconfigure.OAuth2Clien
 import org.springframework.boot.security.oauth2.client.autoconfigure.OAuth2ClientPropertiesMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.JdbcOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -34,8 +36,8 @@ public class ResourceServiceConfig {
     }
 
     @Bean
-    OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {
-        return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository);
+    OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository, JdbcOperations jdbcOperations) {
+        return new JdbcOAuth2AuthorizedClientService(jdbcOperations, clientRegistrationRepository);
     }
 
     @Bean
