@@ -14,16 +14,7 @@ spring:
     oauth2:
       client:
         registration:
-          web-client-oidc:
-            provider: spring
-            client-id: web-client
-            client-secret: secret
-            authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-            scope:
-              - openid
-            client-name: web-client-oidc
-          web-client-authorization-code:
+          web-client:
             provider: spring
             client-id: web-client
             client-secret: secret
@@ -32,7 +23,7 @@ spring:
             scope:
               - openid
               - resources.read
-            client-name: web-client-authorization-code
+            client-name: web-client
         provider:
           spring:
             issuer-uri: http://localhost:9000

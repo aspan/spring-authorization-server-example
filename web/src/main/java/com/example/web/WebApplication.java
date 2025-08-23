@@ -46,7 +46,7 @@ public class WebApplication {
 
     @GetMapping(value = "/resources")
     public String[] getResources(
-            @RegisteredOAuth2AuthorizedClient("web-client-authorization-code") OAuth2AuthorizedClient authorizedClient
+            @RegisteredOAuth2AuthorizedClient("web-client") OAuth2AuthorizedClient authorizedClient
     ) {
         try {
             return this.webClient

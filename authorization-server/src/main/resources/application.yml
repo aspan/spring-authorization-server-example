@@ -70,8 +70,7 @@ spring:
                 - refresh_token
                 - client_credentials
               redirect-uris:
-                - http://127.0.0.1:8082/login/oauth2/code/web-client-oidc
-                - http://127.0.0.1:8082/login/oauth2/code/web-client-authorization-code
+                - http://127.0.0.1:8082/login/oauth2/code/web-client
               scopes:
                 - openid
                 - profile
