@@ -27,3 +27,8 @@ spring:
         provider:
           spring:
             issuer-uri: http://localhost:9000
+
+example:
+  client-registration-id: web-client
+  resource-server-url: "http://127.0.0.1:8090"
+

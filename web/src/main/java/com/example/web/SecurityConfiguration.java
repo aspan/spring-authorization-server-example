@@ -13,13 +13,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -28,7 +25,6 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class SecurityConfiguration {
@@ -37,6 +33,11 @@ public class SecurityConfiguration {
 
     public SecurityConfiguration(ClientRegistrationRepository clientRegistrationRepository) {
         this.clientRegistrationRepository = clientRegistrationRepository;
+    }
+
+    @Bean
+    SecurityContextHolderStrategy securityContextHolderStrategy() {
+        return SecurityContextHolder.getContextHolderStrategy();
     }
 
     @Bean
@@ -71,30 +72,6 @@ public class SecurityConfiguration {
                 )
                 .oauth2Login(withDefaults())
                 .build();
-    }
-
-    @Bean
-    WebClient webClient(OAuth2AuthorizedClientManager authorizedClientManager) {
-        return WebClient.builder()
-                        .apply(
-                                new ServletOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager)
-                                        .oauth2Configuration())
-                        .build();
-    }
-
-    @Bean
-    OAuth2AuthorizedClientManager authorizedClientManager(
-            ClientRegistrationRepository clientRegistrationRepository,
-            OAuth2AuthorizedClientRepository authorizedClientRepository) {
-        var authorizedClientManager = new DefaultOAuth2AuthorizedClientManager(
-                clientRegistrationRepository,
-                authorizedClientRepository);
-        authorizedClientManager.setAuthorizedClientProvider(
-                OAuth2AuthorizedClientProviderBuilder.builder()
-                                                     .authorizationCode()
-                                                     .refreshToken()
-                                                     .build());
-        return authorizedClientManager;
     }
 
     private LogoutSuccessHandler oidcLogoutSuccessHandler() {
