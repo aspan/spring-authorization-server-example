@@ -18,7 +18,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 public class LoginView extends VerticalLayout {
     @Serial
     private static final long serialVersionUID = 1L;
-    private static final String OAUTH_URL = "/oauth2/authorization/vaadin-client-oidc";
+    private static final String OAUTH_URL = "/oauth2/authorization/vaadin-client";
 
     public LoginView() {
         setAlignItems(Alignment.CENTER);

@@ -15,7 +15,7 @@ spring:
     oauth2:
       client:
         registration:
-          vaadin-client-oidc:
+          vaadin-client:
             provider: spring
             client-id: vaadin-client
             client-secret: vaadin
@@ -23,7 +23,8 @@ spring:
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope:
               - openid
-            client-name: vaadin-client-oidc
+              - resources.read
+            client-name: vaadin-client
         provider:
           spring:
             issuer-uri: http://localhost:9000

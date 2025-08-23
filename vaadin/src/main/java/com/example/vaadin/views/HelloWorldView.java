@@ -4,10 +4,14 @@ import java.io.Serial;
 
 import jakarta.annotation.security.PermitAll;
 
+import com.example.vaadin.service.ResourcesRemoteService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.ListItem;
+import com.vaadin.flow.component.html.UnorderedList;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -25,9 +29,12 @@ public class HelloWorldView extends VerticalLayout {
     private static final long serialVersionUID = 1L;
     private final TextField name;
 
-    public HelloWorldView(AuthenticationContext authenticationContext) {
+    public HelloWorldView(AuthenticationContext authenticationContext, ResourcesRemoteService resourcesRemoteService) {
         add(new H1("Hello %s!".formatted(authenticationContext.getPrincipalName().map(Object::toString).orElse(""))));
-
+        add(new H2("Resources"));
+        var ul = new UnorderedList();
+        resourcesRemoteService.getResources().forEach(r -> ul.add(new ListItem(r)));
+        add(ul);
         add(new Button("Register passkey", _ -> UI.getCurrent().getPage().open("http://localhost:9000/webauthn/register", "_self")));
         add(new Button("Logout", _ -> authenticationContext.logout()));
 
