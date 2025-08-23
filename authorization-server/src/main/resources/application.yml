@@ -125,3 +125,5 @@ spring:
       schema-locations:
         - classpath:oauth2-authorization-consent-schema.sql
         - classpath:oauth2-authorization-schema.sql
+        - classpath*:/org/springframework/security/user-credentials-schema-postgres.sql
+        - classpath*:/org/springframework/security/user-entities-schema.sql
