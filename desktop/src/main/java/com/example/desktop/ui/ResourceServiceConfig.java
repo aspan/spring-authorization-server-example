@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager;
-import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.JdbcOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -25,7 +24,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 public class ResourceServiceConfig {
 
     @Bean
-    public ClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties oAuth2ClientProperties) {
+    ClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties oAuth2ClientProperties) {
         var clientRegistrations = List.copyOf(
                 new OAuth2ClientPropertiesMapper(oAuth2ClientProperties)
                         .asClientRegistrations()
@@ -41,8 +40,8 @@ public class ResourceServiceConfig {
     }
 
     @Bean
-    public ResourceService resourcesService(ClientRegistrationRepository clientRegistrationRepository,
-                                            OAuth2AuthorizedClientService authorizedClientService) {
+    ResourceService resourcesService(ClientRegistrationRepository clientRegistrationRepository,
+                                     OAuth2AuthorizedClientService authorizedClientService) {
         var authorizedClientManager = new AuthorizedClientServiceOAuth2AuthorizedClientManager(
                 clientRegistrationRepository,
                 authorizedClientService);

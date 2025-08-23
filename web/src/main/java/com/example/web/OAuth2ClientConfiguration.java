@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
-import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.JdbcOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
@@ -29,7 +28,7 @@ import org.springframework.web.client.RestClient;
 public class OAuth2ClientConfiguration {
 
     @Bean
-    public ClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties oAuth2ClientProperties) {
+    ClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties oAuth2ClientProperties) {
         var clientRegistrations = List.copyOf(
                 new OAuth2ClientPropertiesMapper(oAuth2ClientProperties)
                         .asClientRegistrations()
@@ -65,7 +64,7 @@ public class OAuth2ClientConfiguration {
     }
 
     @Bean
-    public OAuth2ClientHttpRequestInterceptor oAuth2ClientHttpRequestInterceptor(
+    OAuth2ClientHttpRequestInterceptor oAuth2ClientHttpRequestInterceptor(
             OAuth2AuthorizedClientManager authorizedClientManager,
             SecurityContextHolderStrategy securityContextHolderStrategy,
             Environment environment) {
@@ -76,7 +75,7 @@ public class OAuth2ClientConfiguration {
     }
 
     @Bean
-    public RestClient restClient(
+    RestClient restClient(
             OAuth2ClientHttpRequestInterceptor interceptor,
             Environment environment) {
         return RestClient.builder()

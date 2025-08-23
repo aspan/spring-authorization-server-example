@@ -9,7 +9,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 @Configuration
 public class ResourceServiceConfig {
     @Bean
-    public ResourceService resourceService(RestClient restClient) {
+    ResourceService resourceService(RestClient restClient) {
         return HttpServiceProxyFactory.builderFor(
                                               RestClientAdapter.create(
                                                       restClient

@@ -9,6 +9,18 @@ logging:
 spring:
   application:
     name: Resource Server Application
+  datasource:
+    password: secret
+    url: jdbc:postgresql://localhost:32768/exampledatabase
+    username: exampleuser
+  docker:
+    compose:
+      lifecycle-management: start_only
+      file: ../docker-compose.yml
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
   security:
     oauth2:
       resourceserver:
