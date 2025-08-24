@@ -21,23 +21,23 @@ spring:
       file: ../docker-compose.yml
   mustache:
     check-template-location: false
-  security:
-    oauth2:
-      client:
-        registration:
-          vaadin-client:
-            provider: spring
-            client-id: vaadin-client
-            client-secret: vaadin
-            authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-            scope:
-              - openid
-              - resources.read
-            client-name: vaadin-client
-        provider:
-          spring:
-            issuer-uri: http://localhost:9000
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          vaadin-client:
+#            provider: spring
+#            client-id: vaadin-client
+#            client-secret: vaadin
+#            authorization-grant-type: authorization_code
+#            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+#            scope:
+#              - openid
+#              - resources.read
+#            client-name: vaadin-client
+#        provider:
+#          spring:
+#            issuer-uri: http://localhost:9000
   sql:
     init:
       continue-on-error: true

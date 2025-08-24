@@ -1,10 +1,5 @@
 package com.example.desktop.ui;
 
-import java.util.List;
-
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.security.oauth2.client.autoconfigure.OAuth2ClientProperties;
-import org.springframework.boot.security.oauth2.client.autoconfigure.OAuth2ClientPropertiesMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -13,25 +8,19 @@ import org.springframework.security.oauth2.client.JdbcOAuth2AuthorizedClientServ
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.client.OAuth2ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.support.RestClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
+import com.example.core.security.oauth2.client.JdbcClientRegistrationRepository;
+
 @Configuration
-@EnableConfigurationProperties(OAuth2ClientProperties.class)
 public class ResourceServiceConfig {
 
     @Bean
-    ClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties oAuth2ClientProperties) {
-        var clientRegistrations = List.copyOf(
-                new OAuth2ClientPropertiesMapper(oAuth2ClientProperties)
-                        .asClientRegistrations()
-                        .values()
-        );
-        return new InMemoryClientRegistrationRepository(clientRegistrations);
-
+    ClientRegistrationRepository clientRegistrationRepository(JdbcOperations jdbcOperations) {
+        return new JdbcClientRegistrationRepository(jdbcOperations);
     }
 
     @Bean
