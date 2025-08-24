@@ -19,12 +19,14 @@
     With Spring Auth Server: <a href="/oauth2/authorization/web-client">click here</a>
 </div>
 <div class="container authenticated" style="display: none">
-    Logged in as: <span id="user"></span><br>
-    <a href="http://localhost:9000/webauthn/register">Register passkey</a><br>
-    <a href="/resources">Resources</a>
+    <h1>Welcome</h1>
+    <p>Logged in as: <span id="user"></span></p>
+    <p><a href="http://localhost:9000/webauthn/register">Register passkey</a></p>
+    <h2>Resources</h2>
+    <ul id="resources"></ul>
     <div>
         <form th:action="@{/logout}" method="post">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <button type="submit" class="btn btn-primary">Logout</button>
         </form>
     </div>
@@ -32,33 +34,29 @@
 <script type="text/javascript"
         src="/webjars/js-cookie/js.cookie.js"></script>
 <script type="text/javascript">
-    $
-        .ajaxSetup({
-            beforeSend: function (xhr, settings) {
-                if (settings.type == 'POST' || settings.type == 'PUT'
-                    || settings.type == 'DELETE') {
-                    if (!(/^http:.*/.test(settings.url) || /^https:.*/
-                        .test(settings.url))) {
-                        // Only send the token to relative URLs i.e. locally.
-                        xhr.setRequestHeader("X-XSRF-TOKEN",
-                            Cookies.get('XSRF-TOKEN'));
-                    }
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (settings.type == 'POST' || settings.type == 'PUT'
+                || settings.type == 'DELETE') {
+                if (!(/^http:.*/.test(settings.url) || /^https:.*/
+                    .test(settings.url))) {
+                    // Only send the token to relative URLs i.e. locally.
+                    xhr.setRequestHeader("X-XSRF-TOKEN",
+                        Cookies.get('XSRF-TOKEN'));
                 }
             }
-        });
+        }
+    });
     $.get("/user", function (data) {
         $("#user").html(data.name);
         $(".unauthenticated").hide();
         $(".authenticated").show();
     });
-    var logout = function () {
-        $.post("/logout", function () {
-            $("#user").html('');
-            $(".unauthenticated").show();
-            $(".authenticated").hide();
+    $.get("/resources", function (data) {
+        data.forEach(function (item) {
+            $("#resources").append("<li>" + item + "</li>");
         })
-        return true;
-    }
+    });
 </script>
 </body>
 </html>
