@@ -19,99 +19,99 @@ spring:
     oauth2:
       authorizationserver:
         issuer: http://localhost:9000
-        client:
-          hilla-client:
-            registration:
-              client-id: hilla-client
-              client-secret: "{noop}hilla"
-              client-name: Hilla Client
-              client-authentication-methods:
-                - client_secret_basic
-              authorization-grant-types:
-                - authorization_code
-                - refresh_token
-                - client_credentials
-              redirect-uris:
-                - http://127.0.0.1:8084/login/oauth2/code/hilla-client
-              scopes:
-                - openid
-                - profile
-                - email
-                - phone
-                - address
-                - resources.read
-              post-logout-redirect-uris:
-                - http://127.0.0.1:8084
-            require-authorization-consent: false
-          vaadin-client:
-            registration:
-              client-id: vaadin-client
-              client-secret: "{noop}vaadin"
-              client-name: Vaadin Client
-              client-authentication-methods:
-                - client_secret_basic
-              authorization-grant-types:
-                - authorization_code
-                - refresh_token
-                - client_credentials
-              redirect-uris:
-                - http://127.0.0.1:8083/login/oauth2/code/vaadin-client
-              scopes:
-                - openid
-                - profile
-                - email
-                - phone
-                - address
-                - resources.read
-              post-logout-redirect-uris:
-                - http://127.0.0.1:8083
-            require-authorization-consent: false
-          web-client:
-            registration:
-              client-id: web-client
-              client-secret: "{noop}secret"
-              client-name: Web Client
-              client-authentication-methods:
-                - client_secret_basic
-              authorization-grant-types:
-                - authorization_code
-                - refresh_token
-                - client_credentials
-              redirect-uris:
-                - http://127.0.0.1:8082/login/oauth2/code/web-client
-              scopes:
-                - openid
-                - profile
-                - email
-                - phone
-                - address
-                - offline_access
-                - resources.read
-              post-logout-redirect-uris:
-                - http://127.0.0.1:8082
-            require-authorization-consent: false
-          desktop-client:
-            registration:
-              client-id: desktop-client
-              client-secret: "{noop}desktop-secret"
-              client-name: Desktop Client
-              client-authentication-methods:
-                - client_secret_basic
-              authorization-grant-types:
-                - authorization_code
-                - refresh_token
-                - client_credentials
-              redirect-uris:
-                - http://127.0.0.1:8085/login/oauth2/code/desktop-client
-              scopes:
-                - openid
-                - profile
-                - email
-                - phone
-                - address
-                - offline_access
-                - resources.read
-            require-authorization-consent: false
+#        client:
+#          hilla-client:
+#            registration:
+#              client-id: hilla-client
+#              client-secret: "{noop}hilla"
+#              client-name: Hilla Client
+#              client-authentication-methods:
+#                - client_secret_basic
+#              authorization-grant-types:
+#                - authorization_code
+#                - refresh_token
+#                - client_credentials
+#              redirect-uris:
+#                - http://127.0.0.1:8084/login/oauth2/code/hilla-client
+#              scopes:
+#                - openid
+#                - profile
+#                - email
+#                - phone
+#                - address
+#                - resources.read
+#              post-logout-redirect-uris:
+#                - http://127.0.0.1:8084
+#            require-authorization-consent: false
+#          vaadin-client:
+#            registration:
+#              client-id: vaadin-client
+#              client-secret: "{noop}vaadin"
+#              client-name: Vaadin Client
+#              client-authentication-methods:
+#                - client_secret_basic
+#              authorization-grant-types:
+#                - authorization_code
+#                - refresh_token
+#                - client_credentials
+#              redirect-uris:
+#                - http://127.0.0.1:8083/login/oauth2/code/vaadin-client
+#              scopes:
+#                - openid
+#                - profile
+#                - email
+#                - phone
+#                - address
+#                - resources.read
+#              post-logout-redirect-uris:
+#                - http://127.0.0.1:8083
+#            require-authorization-consent: false
+#          web-client:
+#            registration:
+#              client-id: web-client
+#              client-secret: "{noop}secret"
+#              client-name: Web Client
+#              client-authentication-methods:
+#                - client_secret_basic
+#              authorization-grant-types:
+#                - authorization_code
+#                - refresh_token
+#                - client_credentials
+#              redirect-uris:
+#                - http://127.0.0.1:8082/login/oauth2/code/web-client
+#              scopes:
+#                - openid
+#                - profile
+#                - email
+#                - phone
+#                - address
+#                - offline_access
+#                - resources.read
+#              post-logout-redirect-uris:
+#                - http://127.0.0.1:8082
+#            require-authorization-consent: false
+#          desktop-client:
+#            registration:
+#              client-id: desktop-client
+#              client-secret: "{noop}desktop-secret"
+#              client-name: Desktop Client
+#              client-authentication-methods:
+#                - client_secret_basic
+#              authorization-grant-types:
+#                - authorization_code
+#                - refresh_token
+#                - client_credentials
+#              redirect-uris:
+#                - http://127.0.0.1:8085/login/oauth2/code/desktop-client
+#              scopes:
+#                - openid
+#                - profile
+#                - email
+#                - phone
+#                - address
+#                - offline_access
+#                - resources.read
+#            require-authorization-consent: false
     user:
       name: admin
       password: '{noop}password'
@@ -123,7 +123,8 @@ spring:
       continue-on-error: true
       mode: always
       schema-locations:
-        - classpath:oauth2-authorization-consent-schema.sql
-        - classpath:oauth2-authorization-schema.sql
+        - classpath*:/org/springframework/security/oauth2/server/authorization/client/oauth2-registered-client-schema.sql
         - classpath*:/org/springframework/security/user-credentials-schema-postgres.sql
         - classpath*:/org/springframework/security/user-entities-schema.sql
+        - classpath:oauth2-authorization-consent-schema.sql
+        - classpath:oauth2-authorization-schema.sql

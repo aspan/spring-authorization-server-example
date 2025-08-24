@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.server.authorization.JdbcOAuth2Author
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
@@ -69,6 +70,11 @@ public class SecurityConfiguration {
                 )
                 .formLogin(withDefaults())
                 .build();
+    }
+
+    @Bean
+    RegisteredClientRepository registeredClientRepository(JdbcOperations jdbcOperations) {
+        return new JdbcRegisteredClientRepository(jdbcOperations);
     }
 
     @Bean
