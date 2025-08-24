@@ -8,9 +8,9 @@ spring:
   application:
     name: Authorization Server
   datasource:
-    password: secret
-    url: jdbc:postgresql://localhost:32768/exampledatabase
-    username: exampleuser
+    password: tiger
+    url: jdbc:postgresql://localhost:5432/auth
+    username: scott
   docker:
     compose:
       lifecycle-management: start_only
