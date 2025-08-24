@@ -17,34 +17,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JdbcClientRegistrationRepository implements ClientRegistrationRepository {
     private final JdbcOperations jdbcOperations;
-
-    private static final String COLUMN_NAMES = """
-            client_registration_id,
-            client_authentication_method,
-            client_authorization_grant_type,
-            client_id,
-            client_name,
-            client_redirect_uri,
-            client_scopes,
-            client_secret,
-            provider_authorization_uri,
-            provider_configuration_metadata,
-            provider_issuer_uri,
-            provider_jwk_set_uri,
-            provider_token_uri,
-            provider_user_info_endpoint_authentication_method,
-            provider_user_info_endpoint_uri,
-            provider_user_info_endpoint_user_name_attribute_name
-            """;
-
-    private static final String TABLE_NAME = "oauth2_client_registration";
-
-    private static final String LOAD_CLIENT_REGISTRATION_SQL = "SELECT " + COLUMN_NAMES + " FROM " + TABLE_NAME
-                                                               + " WHERE client_registration_id = ?";
-
-    private static final String INSERT_CLIENT_REGISTRATION_SQL = "INSERT INTO " + TABLE_NAME
-                                                                 + "(" + COLUMN_NAMES + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public JdbcClientRegistrationRepository(JdbcOperations jdbcOperations) {
@@ -54,7 +26,26 @@ public class JdbcClientRegistrationRepository implements ClientRegistrationRepos
     @Override
     public ClientRegistration findByRegistrationId(String registrationId) {
         return this.jdbcOperations.queryForObject(
-                LOAD_CLIENT_REGISTRATION_SQL,
+                """
+                        SELECT client_registration_id,
+                               client_authentication_method,
+                               client_authorization_grant_type,
+                               client_id,
+                               client_name,
+                               client_redirect_uri,
+                               client_scopes,
+                               client_secret,
+                               provider_authorization_uri,
+                               provider_configuration_metadata,
+                               provider_issuer_uri,
+                               provider_jwk_set_uri,
+                               provider_token_uri,
+                               provider_user_info_endpoint_authentication_method,
+                               provider_user_info_endpoint_uri,
+                               provider_user_info_endpoint_user_name_attribute_name
+                        FROM oauth2_client_registration
+                        WHERE client_registration_id = ?
+                        """,
                 (rs, rowNum) -> {
                     try {
                         var builder =
@@ -94,7 +85,26 @@ public class JdbcClientRegistrationRepository implements ClientRegistrationRepos
 
     public void save(ClientRegistration clientRegistration) {
         jdbcOperations.update(
-                INSERT_CLIENT_REGISTRATION_SQL,
+                """
+                        INSERT INTO oauth2_client_registration
+                            (client_registration_id,
+                             client_authentication_method,
+                             client_authorization_grant_type,
+                             client_id,
+                             client_name,
+                             client_redirect_uri,
+                             client_scopes,
+                             client_secret,
+                             provider_authorization_uri,
+                             provider_configuration_metadata,
+                             provider_issuer_uri,
+                             provider_jwk_set_uri,
+                             provider_token_uri,
+                             provider_user_info_endpoint_authentication_method,
+                             provider_user_info_endpoint_uri,
+                             provider_user_info_endpoint_user_name_attribute_name)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        """,
                 clientRegistration.getRegistrationId(),
                 clientRegistration.getClientAuthenticationMethod() != null ? clientRegistration.getClientAuthenticationMethod().getValue() : null,
                 clientRegistration.getAuthorizationGrantType() != null ? clientRegistration.getAuthorizationGrantType().getValue() : null,
