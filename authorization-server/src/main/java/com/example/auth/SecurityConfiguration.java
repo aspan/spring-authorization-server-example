@@ -59,16 +59,28 @@ public class SecurityConfiguration {
     @Order(2)
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .authorizeHttpRequests(
-                        a ->
-                                a.anyRequest().authenticated())
+                .authorizeHttpRequests(a -> a
+                        .requestMatchers(
+                                "/apple-touch-icon.png",
+                                "/apple-touch-icon-precomposed.png",
+                                "/css/*.css",
+                                "/login/**",
+                                "/oauth2/**",
+                                "/index.html",
+                                "/favicon.ico",
+                                "/error",
+                                "/webjars/**").permitAll()
+                        .anyRequest().authenticated()
+                )
                 .webAuthn(webAuthn ->
                                   webAuthn
                                           .rpName("Spring Security Relying Party")
                                           .rpId("localhost")
                                           .allowedOrigins("http://localhost:9000")
                 )
-                .formLogin(withDefaults())
+                .formLogin(
+                        formLogin ->
+                                formLogin.loginPage("/login").permitAll())
                 .build();
     }
 

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css"
+          href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <script type="text/javascript" src="/login/webauthn.js"></script>
+    <script type="text/javascript"
+            src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        <!--
+        document.addEventListener("DOMContentLoaded", () => setupLogin({"X-CSRF-TOKEN": "[[${_csrf.token}]]"}, "", document.getElementById('passkey-signin')));
+        //-->
+    </script>
+    <title th:text="#{login.title}">Please sign in</title>
+</head>
+<body class="text-center">
+<main class="form-signin">
+    <div class="alert alert-warning" role="alert" th:if="${param.expired}" th:text="#{login.error.session.expired}">Session expired please try to login again.</div>
+    <div class="alert alert-danger" role="alert" th:if="${param.error}" th:text="#{login.error}">Invalid username or password.</div>
+    <div class="alert alert-info" role="alert" th:if="${param.logout}" th:text="#{logout.info}">You have been logged out.</div>
+    <h3 th:text="${host}"></h3>
+    <h3 th:text="${client_id}"></h3>
+    <form th:action="@{/login}" method="post">
+        <h1 class="h3 mb-3 fw-normal" th:text="#{login.title}">Please sign in</h1>
+
+        <div class="form-floating">
+            <input type="text"
+                   class="form-control"
+                   name="username"
+                   id="username"
+                   placeholder="name@example.com"/>
+            <label for="username" th:text="#{login.username}">Email address</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" name="password" id="password" placeholder="Password"/>
+            <label for="password" th:text="#{login.password}">Password</label>
+        </div>
+        <input
+                type="hidden"
+                th:name="${_csrf.parameterName}"
+                th:value="${_csrf.token}"/>
+        <div class="d-grid gap-2 col-12 mx-auto">
+            <button class="btn btn-primary" type="submit" th:text="#{button.login}">Sign in</button>
+        </div>
+    </form>
+    <hr/>
+    <div class="d-grid gap-2 col-12 mx-auto">
+        <h2 th:text="#{login.passkey.title}">Login with Passkeys</h2>
+        <button id="passkey-signin" class="btn btn-primary" type="submit" th:text="#{button.login.passkey}">Sign in with a passkey</button>
+    </div>
+</main>
+</body>
+</html>

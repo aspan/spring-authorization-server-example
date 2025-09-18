@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css"
+          href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <title>Error</title>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-danger">Error</h1>
+    <table class="table">
+        <tr>
+            <th scope="row">Date</th>
+            <td th:text="${timestamp}"/>
+        </tr>
+        <tr>
+            <th scope="row">Path</th>
+            <td th:text="${path}"/>
+        </tr>
+        <tr>
+            <th scope="row">Error</th>
+            <td th:text="${error}"/>
+        </tr>
+        <tr>
+            <th scope="row">Status</th>
+            <td th:text="${status}"/>
+        </tr>
+        <tr>
+            <th scope="row">Message</th>
+            <td th:text="${message}"/>
+        </tr>
+        <tr>
+            <th scope="row">Exception</th>
+            <td th:text="${exception}"/>
+        </tr>
+        <tr>
+            <th scope="row">Trace</th>
+            <td>
+                <pre th:text="${trace}"/>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
