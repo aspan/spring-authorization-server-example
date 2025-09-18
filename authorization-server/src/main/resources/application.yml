@@ -112,12 +112,12 @@ spring:
 #                - offline_access
 #                - resources.read
 #            require-authorization-consent: false
-    user:
-      name: admin
-      password: '{noop}password'
-      roles:
-        - USER
-        - ADMIN
+#    user:
+#      name: admin
+#      password: '{noop}password'
+#      roles:
+#        - USER
+#        - ADMIN
   sql:
     init:
       continue-on-error: true
@@ -128,3 +128,4 @@ spring:
         - classpath*:/org/springframework/security/user-entities-schema.sql
         - classpath:oauth2-authorization-consent-schema.sql
         - classpath:oauth2-authorization-schema.sql
+        - classpath:user-schema.sql

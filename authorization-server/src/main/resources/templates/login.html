@@ -25,7 +25,9 @@
     <h3 th:text="${client_id}"></h3>
     <form th:action="@{/login}" method="post">
         <h1 class="h3 mb-3 fw-normal" th:text="#{login.title}">Please sign in</h1>
-
+        <p>
+            Login with user/user or admin/admin.
+        </p>
         <div class="form-floating">
             <input type="text"
                    class="form-control"
