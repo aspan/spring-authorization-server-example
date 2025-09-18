@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,11 +23,11 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.ui.DefaultResourcesFilter;
 import org.springframework.security.web.webauthn.api.ImmutablePublicKeyCredentialUserEntity;
 import org.springframework.security.web.webauthn.authentication.WebAuthnAuthentication;
 import org.springframework.security.web.webauthn.management.JdbcPublicKeyCredentialUserEntityRepository;
@@ -53,8 +54,7 @@ public class SecurityConfiguration {
     @Bean
     @Order(1)
     SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
-        var authorizationServerConfigurer = OAuth2AuthorizationServerConfigurer.authorizationServer()
-                                                                               .oidc(withDefaults());
+        var authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer().oidc(withDefaults());
         return http
                 .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
                 .with(authorizationServerConfigurer, Customizer.withDefaults())
@@ -76,6 +76,7 @@ public class SecurityConfiguration {
     @Order(2)
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .addFilter(DefaultResourcesFilter.webauthn())
                 .authorizeHttpRequests(a -> a
                         .requestMatchers(
                                 "/apple-touch-icon.png",
@@ -94,6 +95,7 @@ public class SecurityConfiguration {
                                           .rpName("Spring Security Relying Party")
                                           .rpId("localhost")
                                           .allowedOrigins("http://localhost:9000")
+                                          .disableDefaultRegistrationPage(true)
                 )
                 .formLogin(
                         formLogin ->

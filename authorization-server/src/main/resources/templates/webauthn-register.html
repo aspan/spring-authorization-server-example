@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/login/webauthn.js}"></script>
+    <script type="text/javascript"
+            th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript">
+        <!--
+        const ui = {
+            getRegisterButton: function () {
+                return document.getElementById('register')
+            },
+            getSuccess: function () {
+                return document.getElementById('success')
+            },
+            getError: function () {
+                return document.getElementById('error')
+            },
+            getLabelInput: function () {
+                return document.getElementById('label')
+            },
+            getDeleteForms: function () {
+                return Array.from(document.getElementsByClassName("delete-form"))
+            },
+        }
+        document.addEventListener("DOMContentLoaded", () => setupRegistration({"X-CSRF-TOKEN": "[[${_csrf.token}]]"}, "", ui));
+        //-->
+    </script>
+    <title th:text="#{webauthn.registration.title}">WebAuthn Registration</title>
+</head>
+<body>
+<div class="container">
+    <h2>WebAuthn Registration</h2>
+    <form class="default-form" method="post" action="#" onclick="return false">
+        <div id="success" class="alert alert-success" role="alert" th:text="#{webauthn.registration.success}">Success!</div>
+        <div id="error" class="alert alert-danger" role="alert"></div>
+        <div class="mb-3">
+            <label for="label" class="form-label" th:text="#{webauthn.registration.label}">Passkey Label</label>
+            <input type="text" id="label" class="form-control" name="label" th:placeholder="#{webauthn.registration.label}" placeholder="Passkey Label" required autofocus>
+        </div>
+        <button id="register" class="btn btn-primary" type="submit">Register</button>
+    </form>
+    <table class="table table-striped">
+        <thead>
+        <tr class="table-header">
+            <th th:text="#{webauthn.table.label}">Label</th>
+            <th th:text="#{webauthn.table.created}">Created</th>
+            <th th:text="#{webauthn.table.last-used}">Last Used</th>
+            <th th:text="#{webauthn.table.signature-count}">Signature Count</th>
+            <th th:text="#{webauthn.table.delete}">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="passkey: ${passkeys}">
+            <td th:text="${passkey.label}"/>
+            <td th:text="${passkey.created}"/>
+            <td th:text="${passkey.lastUsed}"/>
+            <td th:text="${passkey.signatureCount}"/>
+            <td>
+                <form class="delete-form" method="post" th:action="@{/webauthn/register/{id}(id=${passkey.id})}">
+                    <input type="hidden" name="method" value="delete">
+                    <button class="btn btn-danger btn-sm" type="submit" th:text="#{button.delete}">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

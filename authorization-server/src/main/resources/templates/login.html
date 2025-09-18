@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css"
-          href="/webjars/bootstrap/css/bootstrap.min.css"/>
+          th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/login.css}">
-    <script type="text/javascript" src="/login/webauthn.js"></script>
+    <script type="text/javascript" th:src="@{/login/webauthn.js}"></script>
     <script type="text/javascript"
-            src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+            th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
     <script type="text/javascript">
         <!--
         document.addEventListener("DOMContentLoaded", () => setupLogin({"X-CSRF-TOKEN": "[[${_csrf.token}]]"}, "", document.getElementById('passkey-signin')));
@@ -21,8 +21,6 @@
     <div class="alert alert-warning" role="alert" th:if="${param.expired}" th:text="#{login.error.session.expired}">Session expired please try to login again.</div>
     <div class="alert alert-danger" role="alert" th:if="${param.error}" th:text="#{login.error}">Invalid username or password.</div>
     <div class="alert alert-info" role="alert" th:if="${param.logout}" th:text="#{logout.info}">You have been logged out.</div>
-    <h3 th:text="${host}"></h3>
-    <h3 th:text="${client_id}"></h3>
     <form th:action="@{/login}" method="post">
         <h1 class="h3 mb-3 fw-normal" th:text="#{login.title}">Please sign in</h1>
         <p>
@@ -40,10 +38,6 @@
             <input type="password" class="form-control" name="password" id="password" placeholder="Password"/>
             <label for="password" th:text="#{login.password}">Password</label>
         </div>
-        <input
-                type="hidden"
-                th:name="${_csrf.parameterName}"
-                th:value="${_csrf.token}"/>
         <div class="d-grid gap-2 col-12 mx-auto">
             <button class="btn btn-primary" type="submit" th:text="#{button.login}">Sign in</button>
         </div>
