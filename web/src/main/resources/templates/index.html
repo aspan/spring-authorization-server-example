@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,16 +14,27 @@
     <title th:text="#{title}">Demo</title>
 </head>
 <body>
-<div class="container-md unauthenticated" th:inline="text">
+<div class="container-md unauthenticated" sec:authorize="isAnonymous()">
     <h1 th:text="#{login.title}">Login</h1>
-    [[#{login.with}]]: <a th:href="@{/oauth2/authorization/web-client}" th:text="#{login.link}">click here</a>
+    <p>
+        <span th:text="#{login.with}"></span>: <a th:href="@{/oauth2/authorization/web-client}" th:text="#{login.link}">click here</a>
+    </p>
 </div>
-<div class="container-md authenticated" style="display: none">
+<div class="container-md authenticated" style="display: none" sec:authorize="isAuthenticated()">
     <h1 th:text="#{welcome}">Welcome</h1>
-    <p th:inline="text">[[#{logged.in}]]: <span id="user"></span></p>
-    <p><a href="http://localhost:9000/webauthn/register" th:text="#{register.passkey}">Register passkey</a></p>
-    <h2 th:text="#{resources}">Resources</h2>
-    <ul id="resources"></ul>
+    <p>
+        <span th:text="#{logged.in}"></span>: <span id="user"></span>
+    </p>
+    <p>
+        <span th:text="#{logged.in.thymeleaf}"></span>: <span sec:authentication="name"></span>
+    </p>
+    <p>
+        <a href="http://localhost:9000/webauthn/register" th:text="#{register.passkey}">Register passkey</a>
+    </p>
+    <div sec:authorize="hasAuthority('SCOPE_resources.read')">
+        <h2 th:text="#{resources}">Resources</h2>
+        <ul id="resources"></ul>
+    </div>
     <div>
         <form th:action="@{/logout}" method="post">
             <button type="submit" class="btn btn-primary" th:text="#{logout}">Logout</button>
