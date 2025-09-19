@@ -19,6 +19,9 @@ spring:
     compose:
       lifecycle-management: start_only
       file: ../docker-compose.yml
+  http:
+    converters:
+      preferred-json-mapper: jackson2
   mustache:
     check-template-location: false
 #  security:

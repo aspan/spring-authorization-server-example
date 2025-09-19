@@ -30,7 +30,7 @@ public class WebApplication {
         this.resourceService = resourceService;
     }
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         SpringApplication.run(WebApplication.class, args);
     }
 

@@ -15,7 +15,7 @@ import javafx.application.Application;
 
 @SpringBootApplication
 public class DesktopApplication {
-    public static void main(String[] args) {
+    static void main(String[] args) {
         SecurityContextHolder.setStrategyName(MODE_GLOBAL);
         Application.launch(JavaFxApplication.class, args);
     }
