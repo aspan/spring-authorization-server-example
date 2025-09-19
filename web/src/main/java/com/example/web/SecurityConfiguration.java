@@ -3,6 +3,8 @@ package com.example.web;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -14,10 +16,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
+import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -68,6 +75,32 @@ public class SecurityConfiguration {
                 )
                 .oauth2Login(withDefaults())
                 .build();
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    GrantedAuthoritiesMapper userAuthoritiesMapper() {
+        return (authorities) -> {
+            var mappedAuthorities = new HashSet<GrantedAuthority>();
+
+            authorities.forEach(authority -> {
+                if (authority instanceof OidcUserAuthority oidcAuth) {
+                    oidcAuth.getIdToken()
+                            .getClaimAsStringList("roles")
+                            .forEach(role -> mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role)));
+
+                } else if (authority instanceof OAuth2UserAuthority oauth2Auth) {
+                    var rolesAttribute = oauth2Auth.getAttributes().get("roles");
+                    if (rolesAttribute != null) {
+                        ((List<String>) rolesAttribute).forEach(
+                                role -> mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role))
+                        );
+                    }
+                }
+            });
+
+            return mappedAuthorities;
+        };
     }
 
     @Bean

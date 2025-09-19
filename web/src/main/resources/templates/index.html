@@ -24,9 +24,11 @@
     <h1 th:text="#{welcome}">Welcome</h1>
     <p>
         <span th:text="#{logged.in}"></span>: <span id="user"></span>
+        <span sec:authorize="hasRole('USER')">USER</span> <span sec:authorize="hasRole('ADMIN')">ADMIN</span>
     </p>
     <p>
         <span th:text="#{logged.in.thymeleaf}"></span>: <span sec:authentication="name"></span>
+        <span sec:authorize="hasRole('USER')">USER</span> <span sec:authorize="hasRole('ADMIN')">ADMIN</span>
     </p>
     <p>
         <a href="http://localhost:9000/webauthn/register" th:text="#{register.passkey}">Register passkey</a>

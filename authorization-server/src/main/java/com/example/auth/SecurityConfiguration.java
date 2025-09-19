@@ -2,16 +2,18 @@ package com.example.auth;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import java.util.stream.Collectors;
+
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +26,8 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
+import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
@@ -47,7 +51,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    UserDetailsService users(DataSource dataSource) {
+    UserDetailsService userDetailsService(DataSource dataSource) {
         return new JdbcUserDetailsManager(dataSource);
     }
 
@@ -57,7 +61,7 @@ public class SecurityConfiguration {
         var authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer().oidc(withDefaults());
         return http
                 .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
-                .with(authorizationServerConfigurer, Customizer.withDefaults())
+                .with(authorizationServerConfigurer, withDefaults())
                 .authorizeHttpRequests(
                         a ->
                                 a.anyRequest().authenticated()
@@ -101,6 +105,18 @@ public class SecurityConfiguration {
                         formLogin ->
                                 formLogin.loginPage("/login").permitAll())
                 .build();
+    }
+
+    @Bean
+    public OAuth2TokenCustomizer<JwtEncodingContext> oauth2TokenCustomizer() {
+        return (context) -> {
+            var principal = context.getPrincipal();
+            var authorities = principal.getAuthorities().stream()
+                                       .map(GrantedAuthority::getAuthority)
+                                       .map(role -> role.replace("ROLE_", ""))
+                                       .collect(Collectors.toSet());
+            context.getClaims().claim("roles", authorities);
+        };
     }
 
     @Bean

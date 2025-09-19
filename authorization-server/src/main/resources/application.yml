@@ -1,7 +1,7 @@
 debug: true
 logging:
   level:
-    org.springframework.security: trace
+    org.springframework.security: DEBUG
 server:
   port: 9000
 spring:
