@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <script type="text/javascript"
+            th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <title th:text="#{home.title}">Home</title>
+</head>
+<body class="container-md">
+<h1 th:text="#{home.title}"></h1>
+<p th:text="#{home.description}">Description</p>
+<ul>
+    <li><a href="http://127.0.0.1:8082" th:text="#{web.application.title}">Web Application</a></li>
+    <li><a href="http://127.0.0.1:8083" th:text="#{vaadin.application.title}">Vaadin Application</a></li>
+    <li><a href="http://127.0.0.1:8084" th:text="#{hilla.application.title}">Hilla Application</a></li>
+    <li><a th:href="@{/webauthn/register}" th:text="#{register.passkey}">Register Passkey</a></li>
+</ul>
+</body>
+</html>

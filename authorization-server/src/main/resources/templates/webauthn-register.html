@@ -33,7 +33,7 @@
     <title th:text="#{webauthn.registration.title}">WebAuthn Registration</title>
 </head>
 <body>
-<div class="container">
+<div class="container-md">
     <h2>WebAuthn Registration</h2>
     <form class="default-form" method="post" action="#" onclick="return false">
         <div id="success" class="alert alert-success" role="alert" th:text="#{webauthn.registration.success}">Success!</div>
@@ -44,7 +44,7 @@
         </div>
         <button id="register" class="btn btn-primary" type="submit">Register</button>
     </form>
-    <table class="table table-striped">
+    <table class="table table-striped" th:unless="${#lists.isEmpty(passkeys)}">
         <thead>
         <tr class="table-header">
             <th th:text="#{webauthn.table.label}">Label</th>
@@ -69,6 +69,7 @@
         </tr>
         </tbody>
     </table>
+    <a th:if="${referer != null}" th:href="${referer}" th:text="#{button.back}">Back</a>
 </div>
 </body>
 </html>

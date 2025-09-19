@@ -9,6 +9,7 @@ import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.web.webauthn.api.CredentialRecord;
 import org.springframework.security.web.webauthn.management.PublicKeyCredentialUserEntityRepository;
 import org.springframework.security.web.webauthn.management.UserCredentialRepository;
@@ -30,7 +31,7 @@ public class WebAuthnRegistrationPageController {
     public String webAuthnRegisterPage(HttpServletRequest httpServletRequest, Model model) {
         var userEntity = this.userEntities.findByUsername(httpServletRequest.getRemoteUser());
         List<CredentialRecord> credentials = (userEntity != null) ? this.userCredentials.findByUserId(userEntity.getId()) : List.of();
-
+        model.addAttribute("referer", httpServletRequest.getHeader(HttpHeaders.REFERER));
         if (!credentials.isEmpty()) {
             model.addAttribute("passkeys", credentials.stream().map(
                     c -> new Passkey(
