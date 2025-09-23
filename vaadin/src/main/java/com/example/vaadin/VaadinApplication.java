@@ -12,9 +12,12 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import com.example.core.OpenBrowserConfiguration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.page.AppShellConfigurator;
+import com.vaadin.flow.theme.Theme;
+import com.vaadin.flow.theme.lumo.Lumo;
 
 @Import(OpenBrowserConfiguration.class)
 @SpringBootApplication
+@Theme(themeClass = Lumo.class, variant = Lumo.DARK)
 public class VaadinApplication implements AppShellConfigurator {
     @Serial
     private static final long serialVersionUID = 1L;
