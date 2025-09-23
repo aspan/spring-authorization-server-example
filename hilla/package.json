@@ -3,7 +3,6 @@
   "license": "UNLICENSED",
   "type": "module",
   "dependencies": {
-    "@vaadin/bundles": "25.0.0-alpha19",
     "@vaadin/common-frontend": "0.0.19",
     "@vaadin/hilla-file-router": "25.0.0-alpha8",
     "@vaadin/hilla-frontend": "25.0.0-alpha8",
@@ -61,7 +60,6 @@
   },
   "vaadin": {
     "dependencies": {
-      "@vaadin/bundles": "25.0.0-alpha19",
       "@vaadin/common-frontend": "0.0.19",
       "@vaadin/hilla-file-router": "25.0.0-alpha8",
       "@vaadin/hilla-frontend": "25.0.0-alpha8",
@@ -116,10 +114,9 @@
       "workbox-core": "7.3.0",
       "workbox-precaching": "7.3.0"
     },
-    "hash": "16322be89df1a8427bb15aea781511ffb3d67322d99b2c09b7b43708ddd12f74"
+    "hash": "2f9b94fe7c45a33fae28962593c4d4aa3f5a6fe9bf5f88fcf4eea3d844def681"
   },
   "overrides": {
-    "@vaadin/bundles": "$@vaadin/bundles",
     "@vaadin/vaadin-development-mode-detector": "$@vaadin/vaadin-development-mode-detector",
     "@vaadin/vaadin-usage-statistics": "$@vaadin/vaadin-usage-statistics",
     "@vaadin/react-components": "$@vaadin/react-components",
