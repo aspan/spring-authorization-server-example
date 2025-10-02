@@ -12,7 +12,7 @@ import com.vaadin.flow.component.page.AppShellConfigurator;
 
 @Import(OpenBrowserConfiguration.class)
 @SpringBootApplication
-@CssImport("@vaadin/vaadin-lumo-styles/lumo.css")
+@CssImport("@vaadin/aura/aura.css")
 public class VaadinApplication implements AppShellConfigurator {
     @Serial
     private static final long serialVersionUID = 1L;
