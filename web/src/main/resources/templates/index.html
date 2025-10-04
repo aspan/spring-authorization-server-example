@@ -33,7 +33,7 @@
     <p>
         <a href="http://localhost:9000/webauthn/register" th:text="#{register.passkey}">Register passkey</a>
     </p>
-    <div sec:authorize="hasAuthority('SCOPE_resources.read')">
+    <div>
         <h2 th:text="#{resources}">Resources</h2>
         <ul id="resources"></ul>
     </div>
@@ -66,7 +66,7 @@
     });
     $.get("/resources", function (data) {
         data.forEach(function (item) {
-            $("#resources").append("<li>" + item + "</li>");
+            $("#resources").append("<li>" + item.name + "</li>");
         })
     });
 </script>

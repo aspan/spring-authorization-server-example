@@ -5,6 +5,9 @@ import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROT
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.example.resource.client.Resource;
+import com.example.resource.client.ResourceService;
+
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,7 +34,7 @@ public class ApplicationController extends AbstractController {
     @FXML
     public void initialize() {
         this.usernameLabel.setText("Username: " + authenticationService.getAuthentication().getName());
-        this.resourcesList.setItems(FXCollections.observableList(this.resourceService.getResources()));
+        this.resourcesList.setItems(FXCollections.observableList(this.resourceService.getResources().stream().map(Resource::name).toList()));
     }
 
     public void logout(ActionEvent actionEvent) {

@@ -7,10 +7,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
 import com.example.core.OpenBrowserConfiguration;
+import com.example.resource.client.ResourceServiceConfig;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 
 @SpringBootApplication
-@Import(OpenBrowserConfiguration.class)
+@Import({OpenBrowserConfiguration.class, ResourceServiceConfig.class})
 public class HillaApplication implements AppShellConfigurator {
     @Serial
     private static final long serialVersionUID = 1L;

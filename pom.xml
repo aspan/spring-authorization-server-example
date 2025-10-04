@@ -132,6 +132,7 @@
         <module>resource</module>
         <module>vaadin</module>
         <module>web</module>
+        <module>resource-client</module>
     </modules>
 
     <repositories>

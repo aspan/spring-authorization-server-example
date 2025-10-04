@@ -4,6 +4,7 @@ import { Button, HorizontalLayout, Notification, TextField, VerticalLayout } fro
 import { HelloWorldService, ResourceEndpointService } from 'Frontend/generated/endpoints.js';
 import { useAuth } from 'Frontend/util/auth';
 import { useEffect } from 'react';
+import Resource from 'Frontend/generated/com/example/resource/client/Resource';
 
 export const config: ViewConfig = {
   menu: { order: 0 },
@@ -14,7 +15,7 @@ export const config: ViewConfig = {
 export default function HelloWorldView() {
   const name = useSignal('');
   const auth = useAuth();
-  const resources: Signal<string[]> = useSignal([]);
+  const resources: Signal<Resource[]> = useSignal([]);
 
   useEffect(() => {
     ResourceEndpointService.resources().then((value) => {
@@ -28,7 +29,7 @@ export default function HelloWorldView() {
       <h2>Resources</h2>
       <ul>
         {resources.value.map((value, index) => (
-          <li key={index}>{value}</li>
+          <li key={index}>{value.name}</li>
         ))}
       </ul>
       <a href="http://localhost:9000/webauthn/register">Register passkey</a>

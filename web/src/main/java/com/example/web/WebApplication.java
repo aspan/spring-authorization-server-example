@@ -1,6 +1,7 @@
 package com.example.web;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -17,9 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.core.OpenBrowserConfiguration;
-import com.example.web.service.ResourceService;
+import com.example.resource.client.Resource;
+import com.example.resource.client.ResourceService;
+import com.example.resource.client.ResourceServiceConfig;
 
-@Import(OpenBrowserConfiguration.class)
+@Import({OpenBrowserConfiguration.class, ResourceServiceConfig.class})
 @RestController
 @SpringBootApplication
 public class WebApplication {
@@ -40,9 +43,9 @@ public class WebApplication {
     }
 
     @GetMapping(value = "/resources")
-    public String[] getResources() {
+    public List<Resource> getResources() {
         try {
-            return resourceService.getResources().toArray(new String[0]);
+            return resourceService.getResources();
         } catch (Exception e) {
             LOGGER.error("", e);
             throw new ResponseStatusException(HttpStatusCode.valueOf(500), e.getMessage());

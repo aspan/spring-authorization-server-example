@@ -7,6 +7,8 @@ import jakarta.annotation.security.PermitAll;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.example.resource.client.Resource;
+import com.example.resource.client.ResourceService;
 import com.vaadin.hilla.BrowserCallable;
 
 @BrowserCallable
@@ -19,7 +21,7 @@ public class ResourceEndpointService {
         this.resourceService = resourceService;
     }
 
-    public List<String> resources() {
+    public List<Resource> resources() {
         System.out.println(SecurityContextHolder.getContext().getAuthentication());
         return resourceService.getResources();
     }

@@ -23,15 +23,15 @@ public class ResourceServerApplication {
         this.resourceRepository = resourceRepository;
     }
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         SpringApplication.run(ResourceServerApplication.class, args);
     }
 
     @GetMapping("/resources")
     @PreAuthorize("hasAuthority('SCOPE_resources.read')")
-    public String[] getResources(JwtAuthenticationToken authentication) {
+    public List<Resource> getResources(JwtAuthenticationToken authentication) {
         LOGGER.info("Logged in user: {}", authentication.getName());
-        return resourceRepository.findAll().stream().map(Resource::getName).toArray(String[]::new);
+        return resourceRepository.findAll();
     }
 
     @Bean
