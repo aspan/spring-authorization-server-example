@@ -9,15 +9,11 @@ import java.util.concurrent.Executors;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import com.example.resource.client.ResourceServiceConfig;
 
 import javafx.application.Application;
 
 @SpringBootApplication
-@Import(ResourceServiceConfig.class)
 public class DesktopApplication {
     static void main(String[] args) {
         SecurityContextHolder.setStrategyName(MODE_GLOBAL);
