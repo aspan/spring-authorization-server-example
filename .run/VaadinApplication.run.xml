@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="VaadinApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
     <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-    <module name="vaadin" />
+    <module name="vaadin-web-application" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.vaadin.VaadinApplication" />
     <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
     <extension name="com.fapiko.jetbrains.plugins.better_direnv.runconfigs.IdeaRunConfigurationExtension">

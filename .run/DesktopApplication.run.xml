@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="DesktopApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
     <option name="ENABLE_JMX_AGENT" value="false" />
-    <module name="desktop" />
+    <module name="javafx-desktop-application" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.desktop.ui.DesktopApplication" />
     <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
     <extension name="com.fapiko.jetbrains.plugins.better_direnv.runconfigs.IdeaRunConfigurationExtension">

@@ -8,7 +8,7 @@ clients with the Spring Authorization Server.
 The authorization-server module contains the authorization server
 set up with mainly plain spring boot configuration.
 
-## Web
+## Web & Thymeleaf
 
 The web module contains a web app with thymeleaf
 and javascript that demonstrates SPA login.

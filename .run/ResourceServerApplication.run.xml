@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="ResourceServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-    <module name="resource" />
+    <module name="resource-server" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.resource.ResourceServerApplication" />
     <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
     <extension name="com.fapiko.jetbrains.plugins.better_direnv.runconfigs.IdeaRunConfigurationExtension">

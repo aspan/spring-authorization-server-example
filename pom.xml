@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>auth</artifactId>
+    <artifactId>authorization-server-example</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>auth</name>
@@ -125,13 +125,14 @@
     </build>
 
     <modules>
-        <module>core</module>
+        <module>oauth2-client-registration-jdbc</module>
         <module>authorization-server</module>
-        <module>desktop</module>
-        <module>hilla</module>
-        <module>resource</module>
-        <module>vaadin</module>
-        <module>web</module>
+        <module>javafx-desktop-application</module>
+        <module>browser-opener</module>
+        <module>hilla-web-application</module>
+        <module>resource-server</module>
+        <module>vaadin-web-application</module>
+        <module>thymeleaf-web-application</module>
         <module>resource-client</module>
     </modules>
 
