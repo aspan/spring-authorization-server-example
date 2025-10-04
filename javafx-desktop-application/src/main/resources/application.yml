@@ -39,6 +39,7 @@ spring:
       continue-on-error: true
       mode: always
       schema-locations:
+        - classpath*:oauth2-client-registration-schema.sql
         - classpath*:/org/springframework/security/oauth2/client/oauth2-client-schema-postgres.sql
   threads:
     virtual:
