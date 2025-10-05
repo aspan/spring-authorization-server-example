@@ -2,13 +2,16 @@ package com.example.auth;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.stream.Collectors;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -17,6 +20,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -30,6 +34,7 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
+import org.springframework.security.oauth2.server.authorization.oidc.web.authentication.OidcLogoutAuthenticationSuccessHandler;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
@@ -45,6 +50,7 @@ import org.springframework.security.web.webauthn.api.ImmutablePublicKeyCredentia
 import org.springframework.security.web.webauthn.authentication.WebAuthnAuthentication;
 import org.springframework.security.web.webauthn.management.JdbcPublicKeyCredentialUserEntityRepository;
 import org.springframework.security.web.webauthn.management.JdbcUserCredentialRepository;
+import org.springframework.util.StringUtils;
 
 import com.example.auth.jackson.ImmutablePublicKeyCredentialUserEntityMixIn;
 import com.example.auth.jackson.WebAuthnAuthenticationMixIn;
@@ -53,9 +59,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-
-    private static final Logger log = LoggerFactory.getLogger(SecurityConfiguration.class);
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -69,7 +72,12 @@ public class SecurityConfiguration {
     @Bean
     @Order(1)
     SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
-        var authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer().oidc(withDefaults());
+        var authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer().oidc(
+                oidcConfigurer -> oidcConfigurer.logoutEndpoint(
+                        oidcLogoutEndpointConfigurer -> oidcLogoutEndpointConfigurer
+                                .logoutResponseHandler(new RememberMeOidcLogoutSuccessHandler())
+                )
+        );
         return http
                 .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
                 .with(authorizationServerConfigurer, withDefaults())
@@ -186,5 +194,25 @@ public class SecurityConfiguration {
         var repository = new JdbcTokenRepositoryImpl();
         repository.setJdbcTemplate(jdbcTemplate);
         return repository;
+    }
+
+    static class RememberMeOidcLogoutSuccessHandler implements AuthenticationSuccessHandler {
+        private final OidcLogoutAuthenticationSuccessHandler authenticationSuccessHandler = new OidcLogoutAuthenticationSuccessHandler();
+
+        @Override
+        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+            deleteRememberMeCookie(request, response);
+            authenticationSuccessHandler.onAuthenticationSuccess(request, response, authentication);
+        }
+
+        void deleteRememberMeCookie(HttpServletRequest request, HttpServletResponse response) {
+            var cookie = new Cookie("remember-me", null);
+            var contextPath = request.getContextPath();
+            var cookiePath = StringUtils.hasText(contextPath) ? contextPath : "/";
+            cookie.setPath(cookiePath);
+            cookie.setMaxAge(0);
+            cookie.setSecure(request.isSecure());
+            response.addCookie(cookie);
+        }
     }
 }
