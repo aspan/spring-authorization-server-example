@@ -97,7 +97,10 @@ public class SecurityConfiguration {
 
     @Bean
     @Order(2)
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices, AuthenticationSuccessHandler authenticationSuccessHandler) throws Exception {
+    SecurityFilterChain defaultSecurityFilterChain(
+            AuthenticationSuccessHandler authenticationSuccessHandler,
+            HttpSecurity http,
+            PersistentTokenBasedRememberMeServices rememberMeServices) throws Exception {
         return http
                 .addFilter(DefaultResourcesFilter.webauthn())
                 .authorizeHttpRequests(a -> a
@@ -125,9 +128,11 @@ public class SecurityConfiguration {
                                 formLogin.loginPage("/login").permitAll()
                                          .successHandler(authenticationSuccessHandler))
                 .rememberMe(rememberMe -> rememberMe
-                        .rememberMeServices(persistentTokenBasedRememberMeServices)
+                        .rememberMeServices(rememberMeServices)
                         .authenticationSuccessHandler(authenticationSuccessHandler))
-                .logout(logout -> logout.deleteCookies("JSESSIONID", "remember-me"))
+                .logout(logout ->
+                                logout.deleteCookies("JSESSIONID",
+                                                     "remember-me"))
                 .build();
     }
 
