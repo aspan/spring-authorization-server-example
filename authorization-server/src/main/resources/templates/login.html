@@ -38,6 +38,10 @@
             <input type="password" class="form-control" name="password" id="password" placeholder="Password"/>
             <label for="password" th:text="#{login.password}">Password</label>
         </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="remember-me" id="remember-me"/>
+            <label class="form-check-label" for="remember-me" th:text="#{login.remember-me}">Remember me</label>
+        </div>
         <div class="d-grid gap-2 col-12 mx-auto">
             <button class="btn btn-primary" type="submit" th:text="#{button.login}">Sign in</button>
         </div>

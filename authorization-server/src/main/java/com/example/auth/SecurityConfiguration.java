@@ -2,14 +2,18 @@ package com.example.auth;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import java.time.Duration;
 import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
@@ -30,7 +34,12 @@ import org.springframework.security.oauth2.server.authorization.token.JwtEncodin
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.authentication.ui.DefaultResourcesFilter;
 import org.springframework.security.web.webauthn.api.ImmutablePublicKeyCredentialUserEntity;
 import org.springframework.security.web.webauthn.authentication.WebAuthnAuthentication;
@@ -44,6 +53,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+
+    private static final Logger log = LoggerFactory.getLogger(SecurityConfiguration.class);
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -78,7 +89,7 @@ public class SecurityConfiguration {
 
     @Bean
     @Order(2)
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices, AuthenticationSuccessHandler authenticationSuccessHandler) throws Exception {
         return http
                 .addFilter(DefaultResourcesFilter.webauthn())
                 .authorizeHttpRequests(a -> a
@@ -103,7 +114,12 @@ public class SecurityConfiguration {
                 )
                 .formLogin(
                         formLogin ->
-                                formLogin.loginPage("/login").permitAll())
+                                formLogin.loginPage("/login").permitAll()
+                                         .successHandler(authenticationSuccessHandler))
+                .rememberMe(rememberMe -> rememberMe
+                        .rememberMeServices(persistentTokenBasedRememberMeServices)
+                        .authenticationSuccessHandler(authenticationSuccessHandler))
+                .logout(logout -> logout.deleteCookies("JSESSIONID", "remember-me"))
                 .build();
     }
 
@@ -151,5 +167,24 @@ public class SecurityConfiguration {
     @Bean
     JdbcUserCredentialRepository jdbcUserCredentialRepository(JdbcOperations jdbc) {
         return new JdbcUserCredentialRepository(jdbc);
+    }
+
+    @Bean
+    AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new SavedRequestAwareAuthenticationSuccessHandler();
+    }
+
+    @Bean
+    PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices(UserDetailsService userDetailsService, PersistentTokenRepository persistentTokenRepository) {
+        var service = new PersistentTokenBasedRememberMeServices("rememberMeKey", userDetailsService, persistentTokenRepository);
+        service.setTokenValiditySeconds((int) Duration.ofDays(180).getSeconds());
+        return service;
+    }
+
+    @Bean
+    PersistentTokenRepository persistentTokenRepository(JdbcTemplate jdbcTemplate) {
+        var repository = new JdbcTokenRepositoryImpl();
+        repository.setJdbcTemplate(jdbcTemplate);
+        return repository;
     }
 }

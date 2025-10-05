@@ -18,5 +18,8 @@
     <li><a href="http://127.0.0.1:8084" th:text="#{hilla.application.title}">Hilla Application</a></li>
     <li><a th:href="@{/webauthn/register}" th:text="#{register.passkey}">Register Passkey</a></li>
 </ul>
+<form th:action="@{/logout}" method="post">
+    <button type="submit" class="btn btn-primary" th:text="#{button.logout}">Logout</button>
+</form>
 </body>
 </html>
