@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <script type="text/javascript"
+            th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <title th:text="#{login.ott.title}">Please sign in</title>
+</head>
+<body class="text-center">
+<main class="form-signin">
+    <div class="alert alert-warning" role="alert" th:if="${param.expired}" th:text="#{login.error.session.expired}">Session expired please try to login again.</div>
+    <div class="alert alert-danger" role="alert" th:if="${param.error}" th:text="#{login.error}">Invalid username or password.</div>
+    <div class="alert alert-info" role="alert" th:if="${param.logout}" th:text="#{logout.info}">You have been logged out.</div>
+
+    <form th:action="@{/login/ott}" method="post">
+        <h1 class="h3 mb-3 fw-normal" th:text="#{login.ott.title}">Please sign in</h1>
+        <div class="form-floating">
+            <input class="form-control" type="text" id="token" name="token" th:value="${tokenValue}" placeholder="Token" required="true" autofocus="autofocus"/>
+            <label for="token">Token</label>
+        </div>
+        <div class="d-grid gap-2 col-12 mx-auto mt-2">
+            <button class="btn btn-primary" type="submit" th:text="#{button.login}">Sign in</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

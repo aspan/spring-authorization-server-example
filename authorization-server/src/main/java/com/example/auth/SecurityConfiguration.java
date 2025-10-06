@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.authentication.ott.OneTimeTokenAuthentication;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
@@ -53,6 +54,7 @@ import org.springframework.security.web.webauthn.management.JdbcUserCredentialRe
 import org.springframework.util.StringUtils;
 
 import com.example.auth.jackson.ImmutablePublicKeyCredentialUserEntityMixIn;
+import com.example.auth.jackson.OneTimeTokenAuthenticationMixIn;
 import com.example.auth.jackson.WebAuthnAuthenticationMixIn;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -130,6 +132,11 @@ public class SecurityConfiguration {
                 .rememberMe(rememberMe -> rememberMe
                         .rememberMeServices(rememberMeServices)
                         .authenticationSuccessHandler(authenticationSuccessHandler))
+                .oneTimeTokenLogin(
+                        ott -> ott.loginPage("/login")
+                                  .loginProcessingUrl("/login/ott")
+                                  .showDefaultSubmitPage(false)
+                                  .successHandler(authenticationSuccessHandler))
                 .logout(logout ->
                                 logout.deleteCookies("JSESSIONID",
                                                      "remember-me"))
@@ -164,6 +171,7 @@ public class SecurityConfiguration {
         objectMapper.registerModules(SecurityJackson2Modules.getModules(SecurityConfiguration.class.getClassLoader()));
         objectMapper.registerModule(new OAuth2AuthorizationServerJackson2Module());
         objectMapper.addMixIn(WebAuthnAuthentication.class, WebAuthnAuthenticationMixIn.class);
+        objectMapper.addMixIn(OneTimeTokenAuthentication.class, OneTimeTokenAuthenticationMixIn.class);
         objectMapper.addMixIn(ImmutablePublicKeyCredentialUserEntity.class, ImmutablePublicKeyCredentialUserEntityMixIn.class);
         var authService = new JdbcOAuth2AuthorizationService(jdbcOperations, registeredClientRepository);
         var rowMapper = new OAuth2AuthorizationRowMapper(registeredClientRepository);

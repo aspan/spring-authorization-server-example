@@ -47,6 +47,16 @@
         </div>
     </form>
     <hr/>
+    <form id="ott-form" th:action="@{/ott/generate}" method="post">
+        <div class="form-floating">
+            <input class="form-control" type="text" id="ott-username" name="username" placeholder="Username" required>
+            <label for="ott-username" th:text="#{login.username}">Username</label>
+        </div>
+        <div class="d-grid gap-2 col-12 mx-auto mt-2">
+            <button class="btn btn-primary" form="ott-form" type="submit" th:text="#{button.ott.login}">Send Token</button>
+        </div>
+    </form>
+    <hr/>
     <div class="d-grid gap-2 col-12 mx-auto">
         <h2 th:text="#{login.passkey.title}">Login with Passkeys</h2>
         <button id="passkey-signin" class="btn btn-primary" type="submit" th:text="#{button.login.passkey}">Sign in with a passkey</button>
