@@ -11,7 +11,7 @@
     <title th:text="#{login.ott.title}">Please sign in</title>
 </head>
 <body class="text-center">
-<main class="form-signin">
+<main class="login-form">
     <div class="alert alert-warning" role="alert" th:if="${param.expired}" th:text="#{login.error.session.expired}">Session expired please try to login again.</div>
     <div class="alert alert-danger" role="alert" th:if="${param.error}" th:text="#{login.error}">Invalid username or password.</div>
     <div class="alert alert-info" role="alert" th:if="${param.logout}" th:text="#{logout.info}">You have been logged out.</div>
