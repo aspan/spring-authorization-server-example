@@ -23,7 +23,7 @@
     <div class="alert alert-info" role="alert" th:if="${param.logout}" th:text="#{logout.info}">You have been logged out.</div>
     <form th:action="@{/login}" method="post">
         <h1 class="h3 mb-3 fw-normal" th:text="#{login.title}">Please sign in</h1>
-        <p>
+        <p th:text="#{login.help.message}">
             Login with user/user or admin/admin.
         </p>
         <div class="form-floating">
@@ -49,7 +49,7 @@
     <hr/>
     <form id="ott-form" th:action="@{/ott/generate}" method="post">
         <div class="form-floating">
-            <input class="form-control" type="text" id="ott-username" name="username" placeholder="Username" required>
+            <input class="form-control" type="text" id="ott-username" name="username" th:placeholder="#{login.username}" placeholder="Username" required>
             <label for="ott-username" th:text="#{login.username}">Username</label>
         </div>
         <div class="d-grid gap-2 col-12 mx-auto mt-2">

@@ -10,6 +10,10 @@ import org.springframework.security.authentication.ott.OneTimeToken;
 import org.springframework.security.web.authentication.ott.RedirectOneTimeTokenGenerationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+/**
+ * One time token generation success handler sends the generated one time token
+ * to the user and redirects to the "/login/ott" page to enter the token
+ */
 @Component
 public class OneTimeTokenGenerationSuccessHandler implements org.springframework.security.web.authentication.ott.OneTimeTokenGenerationSuccessHandler {
     private final OneTimeTokenSendService oneTimeTokenSendService;

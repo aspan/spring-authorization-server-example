@@ -34,7 +34,7 @@
 </head>
 <body>
 <div class="container-md">
-    <h2>WebAuthn Registration</h2>
+    <h2 th:text="#{webauthn.registration.title}">WebAuthn Registration</h2>
     <form class="default-form" method="post" action="#" onclick="return false">
         <div id="success" class="alert alert-success" role="alert" th:text="#{webauthn.registration.success}">Success!</div>
         <div id="error" class="alert alert-danger" role="alert"></div>
@@ -42,7 +42,7 @@
             <label for="label" class="form-label" th:text="#{webauthn.registration.label}">Passkey Label</label>
             <input type="text" id="label" class="form-control" name="label" th:placeholder="#{webauthn.registration.label}" placeholder="Passkey Label" required autofocus>
         </div>
-        <button id="register" class="btn btn-primary" type="submit">Register</button>
+        <button id="register" class="btn btn-primary" type="submit" th:text="#{button.webauthn.register}">Register</button>
     </form>
     <table class="table table-striped" th:unless="${#lists.isEmpty(passkeys)}">
         <thead>
