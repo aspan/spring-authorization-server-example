@@ -53,24 +53,46 @@ import org.springframework.security.web.webauthn.management.JdbcPublicKeyCredent
 import org.springframework.security.web.webauthn.management.JdbcUserCredentialRepository;
 import org.springframework.util.StringUtils;
 
-import com.example.auth.jackson.ImmutablePublicKeyCredentialUserEntityMixIn;
-import com.example.auth.jackson.OneTimeTokenAuthenticationMixIn;
-import com.example.auth.jackson.WebAuthnAuthenticationMixIn;
+import com.example.auth.login.ott.OneTimeTokenAuthenticationMixIn;
+import com.example.auth.login.webauthn.ImmutablePublicKeyCredentialUserEntityMixIn;
+import com.example.auth.login.webauthn.WebAuthnAuthenticationMixIn;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * The spring security configuration
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+
+    /**
+     * Password encoder
+     *
+     * @return PasswordEncoder
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
+    /**
+     * Persistent uder details service
+     *
+     * @param dataSource DataSource
+     * @return UserDetailsService
+     */
     @Bean
     UserDetailsService userDetailsService(DataSource dataSource) {
         return new JdbcUserDetailsManager(dataSource);
     }
 
+    /**
+     * The authorization server security filter chain
+     *
+     * @param http HttpSecurity
+     * @return SecurityFilterChain
+     * @throws Exception on error
+     */
     @Bean
     @Order(1)
     SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -97,6 +119,15 @@ public class SecurityConfiguration {
                 .formLogin(withDefaults()).build();
     }
 
+    /**
+     * The default security filter chain used for logging in users
+     *
+     * @param authenticationSuccessHandler AuthenticationSuccessHandler
+     * @param http                         HttpSecurity
+     * @param rememberMeServices           PersistentTokenBasedRememberMeServices
+     * @return SecurityFilterChain
+     * @throws Exception on error
+     */
     @Bean
     @Order(2)
     SecurityFilterChain defaultSecurityFilterChain(
@@ -118,6 +149,21 @@ public class SecurityConfiguration {
                                 "/webjars/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                .formLogin(
+                        formLogin ->
+                                formLogin.loginPage("/login").permitAll()
+                                         .successHandler(authenticationSuccessHandler))
+                .logout(logout ->
+                                logout.deleteCookies("JSESSIONID",
+                                                     "remember-me"))
+                .oneTimeTokenLogin(
+                        ott -> ott.loginPage("/login")
+                                  .loginProcessingUrl("/login/ott")
+                                  .showDefaultSubmitPage(false)
+                                  .successHandler(authenticationSuccessHandler))
+                .rememberMe(rememberMe -> rememberMe
+                        .rememberMeServices(rememberMeServices)
+                        .authenticationSuccessHandler(authenticationSuccessHandler))
                 .webAuthn(webAuthn ->
                                   webAuthn
                                           .rpName("Spring Security Relying Party")
@@ -125,24 +171,14 @@ public class SecurityConfiguration {
                                           .allowedOrigins("http://localhost:9000")
                                           .disableDefaultRegistrationPage(true)
                 )
-                .formLogin(
-                        formLogin ->
-                                formLogin.loginPage("/login").permitAll()
-                                         .successHandler(authenticationSuccessHandler))
-                .rememberMe(rememberMe -> rememberMe
-                        .rememberMeServices(rememberMeServices)
-                        .authenticationSuccessHandler(authenticationSuccessHandler))
-                .oneTimeTokenLogin(
-                        ott -> ott.loginPage("/login")
-                                  .loginProcessingUrl("/login/ott")
-                                  .showDefaultSubmitPage(false)
-                                  .successHandler(authenticationSuccessHandler))
-                .logout(logout ->
-                                logout.deleteCookies("JSESSIONID",
-                                                     "remember-me"))
                 .build();
     }
 
+    /**
+     * An oauth2 token customizer that adds roles as claims
+     *
+     * @return OAuth2TokenCustomizer<JwtEncodingContext>
+     */
     @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> oauth2TokenCustomizer() {
         return (context) -> {
@@ -155,16 +191,36 @@ public class SecurityConfiguration {
         };
     }
 
+    /**
+     * Persistent RegisteredClientRepository
+     *
+     * @param jdbcOperations JdbcOperations
+     * @return RegisteredClientRepository
+     */
     @Bean
     RegisteredClientRepository registeredClientRepository(JdbcOperations jdbcOperations) {
         return new JdbcRegisteredClientRepository(jdbcOperations);
     }
 
+    /**
+     * Persistent OAuth2AuthorizationConsentService
+     *
+     * @param jdbcOperations             JdbcOperations
+     * @param registeredClientRepository RegisteredClientRepository
+     * @return OAuth2AuthorizationConsentService
+     */
     @Bean
     OAuth2AuthorizationConsentService oauth2AuthorizationConsentService(JdbcOperations jdbcOperations, RegisteredClientRepository registeredClientRepository) {
         return new JdbcOAuth2AuthorizationConsentService(jdbcOperations, registeredClientRepository);
     }
 
+    /**
+     * Persistent OAuth2AuthorizationService
+     *
+     * @param jdbcOperations             JdbcOperations
+     * @param registeredClientRepository RegisteredClientRepository
+     * @return OAuth2AuthorizationService
+     */
     @Bean
     OAuth2AuthorizationService oauth2AuthorizationService(JdbcOperations jdbcOperations, RegisteredClientRepository registeredClientRepository) {
         var objectMapper = new ObjectMapper();
@@ -180,21 +236,45 @@ public class SecurityConfiguration {
         return authService;
     }
 
+    /**
+     * WebAuthn public key credential repository
+     *
+     * @param jdbc JdbcOperations
+     * @return JdbcPublicKeyCredentialUserEntityRepository
+     */
     @Bean
     JdbcPublicKeyCredentialUserEntityRepository jdbcPublicKeyCredentialRepository(JdbcOperations jdbc) {
         return new JdbcPublicKeyCredentialUserEntityRepository(jdbc);
     }
 
+    /**
+     * WebAuthn user credential repository
+     *
+     * @param jdbc JdbcOperations
+     * @return JdbcUserCredentialRepository
+     */
     @Bean
     JdbcUserCredentialRepository jdbcUserCredentialRepository(JdbcOperations jdbc) {
         return new JdbcUserCredentialRepository(jdbc);
     }
 
+    /**
+     * The authentication success handler to use for all login methods
+     *
+     * @return AuthenticationSuccessHandler
+     */
     @Bean
     AuthenticationSuccessHandler authenticationSuccessHandler() {
         return new SavedRequestAwareAuthenticationSuccessHandler();
     }
 
+    /**
+     * Remember me authentication RememberMeServices
+     *
+     * @param userDetailsService        UsesDetailsService
+     * @param persistentTokenRepository PersistentTokenRepository
+     * @return PersistentTokenBasedRememberMeServices
+     */
     @Bean
     PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices(UserDetailsService userDetailsService, PersistentTokenRepository persistentTokenRepository) {
         var service = new PersistentTokenBasedRememberMeServices("rememberMeKey", userDetailsService, persistentTokenRepository);
@@ -202,6 +282,12 @@ public class SecurityConfiguration {
         return service;
     }
 
+    /**
+     * Remember me authentication PersistentTokenRepository
+     *
+     * @param jdbcTemplate JdbcTemplate
+     * @return PersistentTokenRepository
+     */
     @Bean
     PersistentTokenRepository persistentTokenRepository(JdbcTemplate jdbcTemplate) {
         var repository = new JdbcTokenRepositoryImpl();
@@ -209,6 +295,9 @@ public class SecurityConfiguration {
         return repository;
     }
 
+    /**
+     * An OIDC logout success handler that also removes the remember-me cookie.
+     */
     static class RememberMeOidcLogoutSuccessHandler implements AuthenticationSuccessHandler {
         private final OidcLogoutAuthenticationSuccessHandler authenticationSuccessHandler = new OidcLogoutAuthenticationSuccessHandler();
 

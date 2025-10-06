@@ -1,4 +1,4 @@
-package com.example.auth.jackson;
+package com.example.auth.login.webauthn;
 
 import java.io.IOException;
 import java.util.Base64;

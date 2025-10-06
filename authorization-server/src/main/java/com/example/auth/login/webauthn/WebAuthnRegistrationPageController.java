@@ -1,4 +1,4 @@
-package com.example.auth.controller;
+package com.example.auth.login.webauthn;
 
 import java.time.Instant;
 import java.time.ZoneId;

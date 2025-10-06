@@ -1,4 +1,4 @@
-package com.example.auth.jackson;
+package com.example.auth.login.webauthn;
 
 import org.springframework.security.web.webauthn.api.Bytes;
 

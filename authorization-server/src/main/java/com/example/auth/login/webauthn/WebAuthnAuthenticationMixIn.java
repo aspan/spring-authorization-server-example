@@ -1,8 +1,9 @@
-package com.example.auth.jackson;
+package com.example.auth.login.webauthn;
 
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.web.webauthn.api.PublicKeyCredentialUserEntity;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -13,8 +14,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.NONE,
         isGetterVisibility = JsonAutoDetect.Visibility.NONE, creatorVisibility = JsonAutoDetect.Visibility.NONE)
 @JsonIgnoreProperties(value = "authenticated", ignoreUnknown = true)
-public class OneTimeTokenAuthenticationMixIn {
-    public OneTimeTokenAuthenticationMixIn(@JsonProperty("principal") Object principal,
-                                           @JsonProperty("authorities") Collection<? extends GrantedAuthority> authorities) {
+public class WebAuthnAuthenticationMixIn {
+    public WebAuthnAuthenticationMixIn(@JsonProperty("principal") PublicKeyCredentialUserEntity principal,
+                                       @JsonProperty("authorities") Collection<? extends GrantedAuthority> authorities) {
     }
 }

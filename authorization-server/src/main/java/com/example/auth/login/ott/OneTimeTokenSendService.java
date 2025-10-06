@@ -1,4 +1,4 @@
-package com.example.auth.ott;
+package com.example.auth.login.ott;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
