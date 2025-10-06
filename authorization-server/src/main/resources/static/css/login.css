@@ -18,10 +18,6 @@ body {
     margin: auto;
 }
 
-.login-form .checkbox {
-    font-weight: 400;
-}
-
 .login-form .form-floating:focus-within {
     z-index: 2;
 }
