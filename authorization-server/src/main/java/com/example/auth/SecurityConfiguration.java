@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.authentication.ott.JdbcOneTimeTokenService;
 import org.springframework.security.authentication.ott.OneTimeTokenAuthentication;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -133,6 +134,7 @@ public class SecurityConfiguration {
     SecurityFilterChain defaultSecurityFilterChain(
             AuthenticationSuccessHandler authenticationSuccessHandler,
             HttpSecurity http,
+            JdbcOneTimeTokenService oneTimeTokenService,
             PersistentTokenBasedRememberMeServices rememberMeServices) throws Exception {
         return http
                 .addFilter(DefaultResourcesFilter.webauthn())
@@ -160,7 +162,8 @@ public class SecurityConfiguration {
                         ott -> ott.loginPage("/login")
                                   .loginProcessingUrl("/login/ott")
                                   .showDefaultSubmitPage(false)
-                                  .successHandler(authenticationSuccessHandler))
+                                  .successHandler(authenticationSuccessHandler)
+                                  .tokenService(oneTimeTokenService))
                 .rememberMe(rememberMe -> rememberMe
                         .rememberMeServices(rememberMeServices)
                         .authenticationSuccessHandler(authenticationSuccessHandler))
@@ -293,6 +296,17 @@ public class SecurityConfiguration {
         var repository = new JdbcTokenRepositoryImpl();
         repository.setJdbcTemplate(jdbcTemplate);
         return repository;
+    }
+
+    /**
+     * Persistent one time token service
+     *
+     * @param jdbcOperations JdbcOperations
+     * @return JdbcOneTimeTokenService
+     */
+    @Bean
+    JdbcOneTimeTokenService jdbcOneTimeTokenService(JdbcOperations jdbcOperations) {
+        return new JdbcOneTimeTokenService(jdbcOperations);
     }
 
     /**

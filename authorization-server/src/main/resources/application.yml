@@ -128,5 +128,6 @@ spring:
         - classpath*:/org/springframework/security/user-entities-schema.sql
         - classpath:oauth2-authorization-consent-schema.sql
         - classpath:oauth2-authorization-schema.sql
+        - classpath:one-time-tokens-schema.sql
         - classpath:persistent_logins.sql
         - classpath:user-schema.sql
