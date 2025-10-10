@@ -127,6 +127,7 @@
     <modules>
         <module>oauth2-client-registration-jdbc</module>
         <module>authorization-server</module>
+        <module>authorization-server-persistence</module>
         <module>javafx-desktop-application</module>
         <module>browser-opener</module>
         <module>hilla-web-application</module>
@@ -142,6 +143,10 @@
             <url>
                 https://maven.vaadin.com/vaadin-prereleases/
             </url>
+        </repository>
+        <repository>
+            <id>shibboleth-releases</id>
+            <url>https://build.shibboleth.net/maven/releases/</url>
         </repository>
     </repositories>
 

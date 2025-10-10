@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    password: tiger
+    url: jdbc:postgresql://localhost:5432/auth
+    username: scott
+  jpa:
+    hibernate:
+      ddl-auto: create

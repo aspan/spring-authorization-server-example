@@ -10,15 +10,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.authentication.ott.JdbcOneTimeTokenService;
-import org.springframework.security.authentication.ott.OneTimeTokenAuthentication;
+import org.springframework.security.authentication.ott.OneTimeTokenService;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
@@ -27,37 +23,17 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.jackson2.SecurityJackson2Modules;
-import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
-import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
-import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper;
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
-import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
 import org.springframework.security.oauth2.server.authorization.oidc.web.authentication.OidcLogoutAuthenticationSuccessHandler;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.authentication.ui.DefaultResourcesFilter;
-import org.springframework.security.web.webauthn.api.ImmutablePublicKeyCredentialUserEntity;
-import org.springframework.security.web.webauthn.authentication.WebAuthnAuthentication;
-import org.springframework.security.web.webauthn.management.JdbcPublicKeyCredentialUserEntityRepository;
-import org.springframework.security.web.webauthn.management.JdbcUserCredentialRepository;
 import org.springframework.util.StringUtils;
-
-import com.example.auth.login.ott.OneTimeTokenAuthenticationMixIn;
-import com.example.auth.login.webauthn.ImmutablePublicKeyCredentialUserEntityMixIn;
-import com.example.auth.login.webauthn.WebAuthnAuthenticationMixIn;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * The spring security configuration
@@ -74,17 +50,6 @@ public class SecurityConfiguration {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
-
-    /**
-     * Persistent uder details service
-     *
-     * @param dataSource DataSource
-     * @return UserDetailsService
-     */
-    @Bean
-    UserDetailsService userDetailsService(DataSource dataSource) {
-        return new JdbcUserDetailsManager(dataSource);
     }
 
     /**
@@ -134,7 +99,7 @@ public class SecurityConfiguration {
     SecurityFilterChain defaultSecurityFilterChain(
             AuthenticationSuccessHandler authenticationSuccessHandler,
             HttpSecurity http,
-            JdbcOneTimeTokenService oneTimeTokenService,
+            OneTimeTokenService oneTimeTokenService,
             PersistentTokenBasedRememberMeServices rememberMeServices) throws Exception {
         return http
                 .addFilter(DefaultResourcesFilter.webauthn())
@@ -195,73 +160,6 @@ public class SecurityConfiguration {
     }
 
     /**
-     * Persistent RegisteredClientRepository
-     *
-     * @param jdbcOperations JdbcOperations
-     * @return RegisteredClientRepository
-     */
-    @Bean
-    RegisteredClientRepository registeredClientRepository(JdbcOperations jdbcOperations) {
-        return new JdbcRegisteredClientRepository(jdbcOperations);
-    }
-
-    /**
-     * Persistent OAuth2AuthorizationConsentService
-     *
-     * @param jdbcOperations             JdbcOperations
-     * @param registeredClientRepository RegisteredClientRepository
-     * @return OAuth2AuthorizationConsentService
-     */
-    @Bean
-    OAuth2AuthorizationConsentService oauth2AuthorizationConsentService(JdbcOperations jdbcOperations, RegisteredClientRepository registeredClientRepository) {
-        return new JdbcOAuth2AuthorizationConsentService(jdbcOperations, registeredClientRepository);
-    }
-
-    /**
-     * Persistent OAuth2AuthorizationService
-     *
-     * @param jdbcOperations             JdbcOperations
-     * @param registeredClientRepository RegisteredClientRepository
-     * @return OAuth2AuthorizationService
-     */
-    @Bean
-    OAuth2AuthorizationService oauth2AuthorizationService(JdbcOperations jdbcOperations, RegisteredClientRepository registeredClientRepository) {
-        var objectMapper = new ObjectMapper();
-        objectMapper.registerModules(SecurityJackson2Modules.getModules(SecurityConfiguration.class.getClassLoader()));
-        objectMapper.registerModule(new OAuth2AuthorizationServerJackson2Module());
-        objectMapper.addMixIn(WebAuthnAuthentication.class, WebAuthnAuthenticationMixIn.class);
-        objectMapper.addMixIn(OneTimeTokenAuthentication.class, OneTimeTokenAuthenticationMixIn.class);
-        objectMapper.addMixIn(ImmutablePublicKeyCredentialUserEntity.class, ImmutablePublicKeyCredentialUserEntityMixIn.class);
-        var authService = new JdbcOAuth2AuthorizationService(jdbcOperations, registeredClientRepository);
-        var rowMapper = new OAuth2AuthorizationRowMapper(registeredClientRepository);
-        rowMapper.setObjectMapper(objectMapper);
-        authService.setAuthorizationRowMapper(rowMapper);
-        return authService;
-    }
-
-    /**
-     * WebAuthn public key credential repository
-     *
-     * @param jdbc JdbcOperations
-     * @return JdbcPublicKeyCredentialUserEntityRepository
-     */
-    @Bean
-    JdbcPublicKeyCredentialUserEntityRepository jdbcPublicKeyCredentialRepository(JdbcOperations jdbc) {
-        return new JdbcPublicKeyCredentialUserEntityRepository(jdbc);
-    }
-
-    /**
-     * WebAuthn user credential repository
-     *
-     * @param jdbc JdbcOperations
-     * @return JdbcUserCredentialRepository
-     */
-    @Bean
-    JdbcUserCredentialRepository jdbcUserCredentialRepository(JdbcOperations jdbc) {
-        return new JdbcUserCredentialRepository(jdbc);
-    }
-
-    /**
      * The authentication success handler to use for all login methods
      *
      * @return AuthenticationSuccessHandler
@@ -283,30 +181,6 @@ public class SecurityConfiguration {
         var service = new PersistentTokenBasedRememberMeServices("rememberMeKey", userDetailsService, persistentTokenRepository);
         service.setTokenValiditySeconds((int) Duration.ofDays(180).getSeconds());
         return service;
-    }
-
-    /**
-     * Remember me authentication PersistentTokenRepository
-     *
-     * @param jdbcTemplate JdbcTemplate
-     * @return PersistentTokenRepository
-     */
-    @Bean
-    PersistentTokenRepository persistentTokenRepository(JdbcTemplate jdbcTemplate) {
-        var repository = new JdbcTokenRepositoryImpl();
-        repository.setJdbcTemplate(jdbcTemplate);
-        return repository;
-    }
-
-    /**
-     * Persistent one time token service
-     *
-     * @param jdbcOperations JdbcOperations
-     * @return JdbcOneTimeTokenService
-     */
-    @Bean
-    JdbcOneTimeTokenService jdbcOneTimeTokenService(JdbcOperations jdbcOperations) {
-        return new JdbcOneTimeTokenService(jdbcOperations);
     }
 
     /**
