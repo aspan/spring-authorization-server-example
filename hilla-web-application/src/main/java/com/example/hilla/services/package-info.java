@@ -1,4 +1,4 @@
-@NonNullApi
+@NullMarked
 package com.example.hilla.services;
 
-import org.springframework.lang.NonNullApi;
+import org.jspecify.annotations.NullMarked;
