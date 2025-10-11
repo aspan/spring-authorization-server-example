@@ -103,11 +103,6 @@ public class SecurityConfiguration {
         };
     }
 
-    @Bean
-    ClientRegistrationRepository clientRegistrationRepository(JdbcOperations jdbcOperations) {
-        return new JdbcClientRegistrationRepository(jdbcOperations);
-    }
-
     private LogoutSuccessHandler oidcLogoutSuccessHandler(ClientRegistrationRepository clientRegistrationRepository) {
         OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler =
                 new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);

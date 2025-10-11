@@ -125,7 +125,7 @@
     </build>
 
     <modules>
-        <module>oauth2-client-registration-jdbc</module>
+        <module>oauth2-client-registration-persistence</module>
         <module>authorization-server</module>
         <module>authorization-server-persistence</module>
         <module>javafx-desktop-application</module>

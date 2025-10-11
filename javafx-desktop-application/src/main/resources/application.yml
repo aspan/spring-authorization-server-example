@@ -17,29 +17,28 @@ spring:
     compose:
       lifecycle-management: start_only
       file: ../docker-compose.yml
-  #  security:
-  #    oauth2:
-  #      client:
-  #        registration:
-  #          desktop-client:
-  #            provider: spring
-  #            client-id: desktop-client
-  #            client-secret: desktop-secret
-  #            authorization-grant-type: authorization_code
-  #            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-  #            scope:
-  #              - openid
-  #              - resources.read
-  #            client-name: desktop-client
-  #        provider:
-  #          spring:
-  #            issuer-uri: http://localhost:9000
+  security:
+    oauth2:
+      client:
+        registration:
+          desktop-client:
+            provider: spring
+            client-id: desktop-client
+            client-secret: desktop-secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope:
+              - openid
+              - resources.read
+            client-name: desktop-client
+        provider:
+          spring:
+            issuer-uri: http://localhost:9000
   sql:
     init:
       continue-on-error: true
       mode: always
       schema-locations:
-        - classpath*:oauth2-client-registration-schema.sql
         - classpath*:/org/springframework/security/oauth2/client/oauth2-client-schema-postgres.sql
   threads:
     virtual:

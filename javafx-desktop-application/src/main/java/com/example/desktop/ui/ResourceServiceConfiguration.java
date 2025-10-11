@@ -18,12 +18,6 @@ import com.example.resource.client.ResourceService;
 
 @Configuration
 public class ResourceServiceConfiguration {
-
-    @Bean
-    ClientRegistrationRepository clientRegistrationRepository(JdbcOperations jdbcOperations) {
-        return new JdbcClientRegistrationRepository(jdbcOperations);
-    }
-
     @Bean
     OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository, JdbcOperations jdbcOperations) {
         return new JdbcOAuth2AuthorizedClientService(jdbcOperations, clientRegistrationRepository);

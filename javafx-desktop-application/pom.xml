@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.example</groupId>
-            <artifactId>oauth2-client-registration-jdbc</artifactId>
+            <artifactId>oauth2-client-registration-persistence</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 

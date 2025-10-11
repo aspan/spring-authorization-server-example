@@ -28,11 +28,6 @@ public class SecurityConfiguration {
     private static final String LOGIN_URL = "/login";
 
     @Bean
-    ClientRegistrationRepository clientRegistrationRepository(JdbcOperations jdbcOperations) {
-        return new JdbcClientRegistrationRepository(jdbcOperations);
-    }
-
-    @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.with(
                 VaadinSecurityConfigurer.vaadin()
