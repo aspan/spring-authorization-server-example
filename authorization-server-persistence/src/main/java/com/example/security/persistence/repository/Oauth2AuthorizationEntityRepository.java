@@ -25,4 +25,10 @@ public interface Oauth2AuthorizationEntityRepository extends JpaRepository<Oauth
            " or a.refreshTokenValue = :token"
     )
     Optional<Oauth2AuthorizationEntity> findByStateOrAuthorizationCodeValueOrAccessTokenValueOrRefreshTokenValue(@Param("token") String token);
+
+    Optional<Oauth2AuthorizationEntity> findByOidcIdTokenValue(String oidcIdTokenValue);
+
+    Optional<Oauth2AuthorizationEntity> findByUserCodeValue(String userCodeValue);
+
+    Optional<Oauth2AuthorizationEntity> findByDeviceCodeValue(String deviceCodeValue);
 }

@@ -1,16 +1,17 @@
 package com.example.security.persistence.service;
 
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.security.oauth2.core.OAuth2DeviceCode;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
+import org.springframework.security.oauth2.core.OAuth2UserCode;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationCode;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
@@ -71,8 +72,14 @@ public class Oauth2AuthorizationService implements OAuth2AuthorizationService {
             result = this.oauth2AuthorizationEntityRepository.findByAuthorizationCodeValue(token);
         } else if (OAuth2ParameterNames.ACCESS_TOKEN.equals(tokenType.getValue())) {
             result = this.oauth2AuthorizationEntityRepository.findByAccessTokenValue(token);
+        } else if (OidcParameterNames.ID_TOKEN.equals(tokenType.getValue())) {
+            result = this.oauth2AuthorizationEntityRepository.findByOidcIdTokenValue(token);
         } else if (OAuth2ParameterNames.REFRESH_TOKEN.equals(tokenType.getValue())) {
             result = this.oauth2AuthorizationEntityRepository.findByRefreshTokenValue(token);
+        } else if (OAuth2ParameterNames.USER_CODE.equals(tokenType.getValue())) {
+            result = this.oauth2AuthorizationEntityRepository.findByUserCodeValue(token);
+        } else if (OAuth2ParameterNames.DEVICE_CODE.equals(tokenType.getValue())) {
+            result = this.oauth2AuthorizationEntityRepository.findByDeviceCodeValue(token);
         } else {
             result = Optional.empty();
         }
@@ -90,7 +97,7 @@ public class Oauth2AuthorizationService implements OAuth2AuthorizationService {
         var builder = OAuth2Authorization.withRegisteredClient(registeredClient)
                                          .id(entity.getId())
                                          .principalName(entity.getPrincipalName())
-                                         .authorizedScopes(registeredClient.getScopes())
+                                         .authorizedScopes(StringUtils.commaDelimitedListToSet(entity.getAuthorizedScopes()))
                                          .authorizationGrantType(Oauth2RegisteredClientRepository.resolveAuthorizationGrantType(entity.getAuthorizationGrantType()))
                                          .attributes(attributes -> attributes.putAll(jsonParser.parseMap(entity.getAttributes())));
         if (entity.getState() != null) {
@@ -133,6 +140,22 @@ public class Oauth2AuthorizationService implements OAuth2AuthorizationService {
             builder.token(idToken, metadata -> metadata.putAll(jsonParser.parseMap(entity.getOidcIdTokenMetadata())));
         }
 
+        if (entity.getUserCodeValue() != null) {
+            OAuth2UserCode userCode = new OAuth2UserCode(
+                    entity.getUserCodeValue(),
+                    entity.getUserCodeIssuedAt(),
+                    entity.getUserCodeExpiresAt());
+            builder.token(userCode, metadata -> metadata.putAll(jsonParser.parseMap(entity.getUserCodeMetadata())));
+        }
+
+        if (entity.getDeviceCodeValue() != null) {
+            OAuth2DeviceCode deviceCode = new OAuth2DeviceCode(
+                    entity.getDeviceCodeValue(),
+                    entity.getDeviceCodeIssuedAt(),
+                    entity.getDeviceCodeExpiresAt());
+            builder.token(deviceCode, metadata -> metadata.putAll(jsonParser.parseMap(entity.getDeviceCodeMetadata())));
+        }
+
         return builder.build();
     }
 
@@ -142,11 +165,11 @@ public class Oauth2AuthorizationService implements OAuth2AuthorizationService {
         entity.setRegisteredClientId(authorization.getRegisteredClientId());
         entity.setPrincipalName(authorization.getPrincipalName());
         entity.setAuthorizationGrantType(authorization.getAuthorizationGrantType().getValue());
+        entity.setAuthorizedScopes(StringUtils.collectionToDelimitedString(authorization.getAuthorizedScopes(), ","));
         entity.setAttributes(jsonParser.writeMap(authorization.getAttributes()));
         entity.setState(authorization.getAttribute(OAuth2ParameterNames.STATE));
+        var authorizationCode = authorization.getToken(OAuth2AuthorizationCode.class);
 
-        var authorizationCode =
-                authorization.getToken(OAuth2AuthorizationCode.class);
         setTokenValues(
                 authorizationCode,
                 entity::setAuthorizationCodeValue,
@@ -155,8 +178,7 @@ public class Oauth2AuthorizationService implements OAuth2AuthorizationService {
                 entity::setAuthorizationCodeMetadata
         );
 
-        var accessToken =
-                authorization.getToken(OAuth2AccessToken.class);
+        var accessToken = authorization.getToken(OAuth2AccessToken.class);
         setTokenValues(
                 accessToken,
                 entity::setAccessTokenValue,
@@ -168,8 +190,7 @@ public class Oauth2AuthorizationService implements OAuth2AuthorizationService {
             entity.setAccessTokenScopes(StringUtils.collectionToDelimitedString(accessToken.getToken().getScopes(), ","));
         }
 
-        var refreshToken =
-                authorization.getToken(OAuth2RefreshToken.class);
+        var refreshToken = authorization.getToken(OAuth2RefreshToken.class);
         setTokenValues(
                 refreshToken,
                 entity::setRefreshTokenValue,
@@ -178,8 +199,7 @@ public class Oauth2AuthorizationService implements OAuth2AuthorizationService {
                 entity::setRefreshTokenMetadata
         );
 
-        var oidcIdToken =
-                authorization.getToken(OidcIdToken.class);
+        var oidcIdToken = authorization.getToken(OidcIdToken.class);
         setTokenValues(
                 oidcIdToken,
                 entity::setOidcIdTokenValue,
@@ -190,6 +210,24 @@ public class Oauth2AuthorizationService implements OAuth2AuthorizationService {
         if (oidcIdToken != null) {
             entity.setOidcIdTokenClaims(jsonParser.writeMap(oidcIdToken.getClaims()));
         }
+
+        var userCode = authorization.getToken(OAuth2UserCode.class);
+        setTokenValues(
+                userCode,
+                entity::setUserCodeValue,
+                entity::setUserCodeIssuedAt,
+                entity::setUserCodeExpiresAt,
+                entity::setUserCodeMetadata
+        );
+
+        var deviceCode = authorization.getToken(OAuth2DeviceCode.class);
+        setTokenValues(
+                deviceCode,
+                entity::setDeviceCodeValue,
+                entity::setDeviceCodeIssuedAt,
+                entity::setDeviceCodeExpiresAt,
+                entity::setDeviceCodeMetadata
+        );
 
         return entity;
     }
