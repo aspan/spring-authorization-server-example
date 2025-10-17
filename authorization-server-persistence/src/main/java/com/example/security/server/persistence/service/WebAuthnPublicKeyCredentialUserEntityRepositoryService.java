@@ -31,8 +31,13 @@ public class WebAuthnPublicKeyCredentialUserEntityRepositoryService implements P
     }
 
     @Override
-    public void save(@NonNull PublicKeyCredentialUserEntity userEntity) {
-        this.webAuthnPublicKeyCredentialUserEntityRepository.save(toEntity(userEntity));
+    public void save(@NonNull PublicKeyCredentialUserEntity publicKeyCredentialUserEntity) {
+        var entity = new WebAuthnPublicKeyCredentialUserEntity();
+        var persistentEntity = this.webAuthnPublicKeyCredentialUserEntityRepository.findById(publicKeyCredentialUserEntity.getId().toBase64UrlString());
+        if (persistentEntity.isPresent()) {
+            entity = persistentEntity.get();
+        }
+        this.webAuthnPublicKeyCredentialUserEntityRepository.save(toEntity(entity, publicKeyCredentialUserEntity));
     }
 
     @Override
@@ -51,11 +56,10 @@ public class WebAuthnPublicKeyCredentialUserEntityRepositoryService implements P
                                                      .build();
     }
 
-    private WebAuthnPublicKeyCredentialUserEntity toEntity(PublicKeyCredentialUserEntity publicKeyCredentialUserEntity) {
+    private WebAuthnPublicKeyCredentialUserEntity toEntity(WebAuthnPublicKeyCredentialUserEntity entity, PublicKeyCredentialUserEntity publicKeyCredentialUserEntity) {
         if (publicKeyCredentialUserEntity == null) {
             return null;
         }
-        var entity = new WebAuthnPublicKeyCredentialUserEntity();
         entity.setId(publicKeyCredentialUserEntity.getId().toBase64UrlString());
         entity.setName(publicKeyCredentialUserEntity.getName());
         entity.setDisplayName(publicKeyCredentialUserEntity.getDisplayName());

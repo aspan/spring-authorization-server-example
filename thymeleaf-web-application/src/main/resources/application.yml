@@ -35,12 +35,9 @@ spring:
         provider:
           spring:
             issuer-uri: http://localhost:9000
-  sql:
-    init:
-      continue-on-error: true
-      mode: always
-      schema-locations:
-        - classpath*:/org/springframework/security/oauth2/client/oauth2-client-schema-postgres.sql
+  jpa:
+    hibernate:
+      ddl-auto: update
 
 example:
   client-registration-id: web-client

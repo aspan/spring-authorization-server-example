@@ -20,7 +20,7 @@
 
         <dependency>
             <groupId>com.example</groupId>
-            <artifactId>oauth2-client-registration-persistence</artifactId>
+            <artifactId>oauth2-client-persistence</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 

@@ -47,12 +47,5 @@ public class WebApplication {
             throw new ResponseStatusException(HttpStatusCode.valueOf(500), e.getMessage());
         }
     }
-
-//    @Bean
-//    CommandLineRunner init(ClientRegistrationRepository clientRegistrationRepository, JdbcOperations jdbcOperations) {
-//        return args -> {
-//            new JdbcClientRegistrationRepository(jdbcOperations).save(clientRegistrationRepository.findByRegistrationId("web-client"));
-//        };
-//    }
 }
 

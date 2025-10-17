@@ -2,10 +2,9 @@ package com.example.web;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
-import org.springframework.security.oauth2.client.JdbcOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -17,13 +16,11 @@ import org.springframework.security.oauth2.client.web.client.OAuth2ClientHttpReq
 import org.springframework.security.oauth2.client.web.client.SecurityContextHolderPrincipalResolver;
 import org.springframework.web.client.RestClient;
 
-@Configuration
-public class OAuth2ClientConfiguration {
-    @Bean
-    OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository, JdbcOperations jdbcOperations) {
-        return new JdbcOAuth2AuthorizedClientService(jdbcOperations, clientRegistrationRepository);
-    }
+import com.example.core.security.oauth2.client.persistence.Oauth2ClientPersistenceConfiguration;
 
+@Configuration
+@Import(Oauth2ClientPersistenceConfiguration.class)
+public class OAuth2ClientConfiguration {
     @Bean
     OAuth2AuthorizedClientRepository authorizedClientRepository(OAuth2AuthorizedClientService authorizedClientService) {
         return new AuthenticatedPrincipalOAuth2AuthorizedClientRepository(authorizedClientService);

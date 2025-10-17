@@ -35,7 +35,12 @@ public class WebAuthnUserCredentialRepositoryService implements UserCredentialRe
 
     @Override
     public void save(@NonNull CredentialRecord credentialRecord) {
-        this.webAuthnUserCredentialEntityRepository.save(toEntity(credentialRecord));
+        var entity = new WebAuthnUserCredentialEntity();
+        var persistedEntity = webAuthnUserCredentialEntityRepository.findById(credentialRecord.getCredentialId().toBase64UrlString());
+        if (persistedEntity.isPresent()) {
+            entity = persistedEntity.get();
+        }
+        this.webAuthnUserCredentialEntityRepository.save(toEntity(entity, credentialRecord));
     }
 
     @Override
@@ -102,11 +107,10 @@ public class WebAuthnUserCredentialRepositoryService implements UserCredentialRe
                                         .build();
     }
 
-    private static WebAuthnUserCredentialEntity toEntity(CredentialRecord record) {
+    private static WebAuthnUserCredentialEntity toEntity(WebAuthnUserCredentialEntity entity, CredentialRecord record) {
         if (record == null) {
             return null;
         }
-        var entity = new WebAuthnUserCredentialEntity();
         var transports = new ArrayList<String>();
         if (!CollectionUtils.isEmpty(record.getTransports())) {
             for (AuthenticatorTransport transport : record.getTransports()) {
