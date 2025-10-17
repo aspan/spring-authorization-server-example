@@ -39,4 +39,3 @@ node_modules/
 src/main/frontend/generated/
 vite.generated.ts
 /vaadin/src/main/bundles/
-/hilla/src/main/bundles/

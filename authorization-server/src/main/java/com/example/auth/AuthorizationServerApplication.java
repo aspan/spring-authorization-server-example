@@ -17,7 +17,7 @@ public class AuthorizationServerApplication {
 //    CommandLineRunner init(RegisteredClientRepository registeredClientRepository, Oauth2RegisteredClientEntityRepository repository, JsonParser jsonParser) {
 //        return args -> {
 //            var jdbcRegisteredClientRepository = new Oauth2RegisteredClientRepository(repository, jsonParser);
-//            for (var r : List.of("desktop-client", "hilla-client", "vaadin-client", "web-client")) {
+//            for (var r : List.of("desktop-client", "vaadin-client", "web-client")) {
 //                var registeredClient = registeredClientRepository.findById(r);
 //                if (registeredClient != null) {
 //                    jdbcRegisteredClientRepository.save(registeredClient);

@@ -130,7 +130,6 @@
         <module>authorization-server-persistence</module>
         <module>javafx-desktop-application</module>
         <module>browser-opener</module>
-        <module>hilla-web-application</module>
         <module>resource-server</module>
         <module>vaadin-web-application</module>
         <module>thymeleaf-web-application</module>

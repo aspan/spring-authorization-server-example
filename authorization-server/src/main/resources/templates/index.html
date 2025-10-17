@@ -15,7 +15,6 @@
 <ul>
     <li><a href="http://127.0.0.1:8082" th:text="#{web.application.title}">Web Application</a></li>
     <li><a href="http://127.0.0.1:8083" th:text="#{vaadin.application.title}">Vaadin Application</a></li>
-    <li><a href="http://127.0.0.1:8084" th:text="#{hilla.application.title}">Hilla Application</a></li>
     <li><a th:href="@{/webauthn/register}" th:text="#{register.passkey}">Register Passkey</a></li>
 </ul>
 <form th:action="@{/logout}" method="post">
