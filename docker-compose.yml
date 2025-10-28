@@ -8,6 +8,6 @@ services:
       - 'POSTGRES_DB=auth'
       - 'POSTGRES_PASSWORD=tiger'
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql
 volumes:
   pgdata:
