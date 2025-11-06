@@ -22,7 +22,7 @@
         <javafx.version>25.0.1</javafx.version>
         <jquery.version>3.7.1</jquery.version>
         <js-cookie.version>3.0.1</js-cookie.version>
-        <nimbus-jose-jwt.version>10.5</nimbus-jose-jwt.version>
+        <nimbus-jose-jwt.version>10.6</nimbus-jose-jwt.version>
         <vaadin.version>25.0.0-beta4</vaadin.version>
         <spring-security.version>7.0.0-RC2</spring-security.version>
     </properties>
