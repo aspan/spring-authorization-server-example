@@ -38,7 +38,6 @@ public class SamlRelyingPartyEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "security_saml2_single_logout_service_bindings",
-            catalog = "authentication_server",
             joinColumns = @JoinColumn(name = "registration_id", foreignKey = @ForeignKey(name = "fk_rp_sb_reg_id"))
     )
     private Set<String> singleLogoutServiceBindings;
@@ -53,7 +52,6 @@ public class SamlRelyingPartyEntity {
     @JoinTable
             (
                     name = "security_saml2_relying_party_decryption_credentials",
-                    catalog = "authentication_server",
                     joinColumns = {@JoinColumn(name = "registration_id", foreignKey = @ForeignKey(name = "fk_rp_dc_reg_id"), referencedColumnName = "registration_id")},
                     inverseJoinColumns = {@JoinColumn(name = "credentials_id", foreignKey = @ForeignKey(name = "fk_rp_dc_cred_id"), referencedColumnName = "id", unique = true)},
                     uniqueConstraints = {@UniqueConstraint(name = "uk_rp_dc_cred_id", columnNames = {"credentials_id"})}
@@ -63,7 +61,6 @@ public class SamlRelyingPartyEntity {
     @JoinTable
             (
                     name = "security_saml2_relying_party_signing_credentials",
-                    catalog = "authentication_server",
                     joinColumns = {@JoinColumn(name = "registration_id", foreignKey = @ForeignKey(name = "fk_rp_sc_reg_id"), referencedColumnName = "registration_id")},
                     inverseJoinColumns = {@JoinColumn(name = "credentials_id", foreignKey = @ForeignKey(name = "fk_rp_sc_cred_id"), referencedColumnName = "id", unique = true)},
                     uniqueConstraints = {@UniqueConstraint(name = "uk_rp_sc_cred_id", columnNames = {"credentials_id"})}

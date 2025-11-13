@@ -27,7 +27,6 @@ public class Saml2AssertingPartyEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "security_saml2_asserting_party_signing_algorithms",
-            catalog = "authentication_server",
             joinColumns = @JoinColumn(name = "entity_id", foreignKey = @ForeignKey(name = "fk_ap_sa_entity_id"), referencedColumnName = "entity_id")
     )
     @Column(name = "signing_algorithm")
@@ -36,7 +35,6 @@ public class Saml2AssertingPartyEntity {
     @JoinTable
             (
                     name = "security_saml2_asserting_party_verification_credentials",
-                    catalog = "authentication_server",
                     joinColumns = {@JoinColumn(name = "entity_id", foreignKey = @ForeignKey(name = "fk_ap_vc_reg_id"), referencedColumnName = "entity_id")},
                     inverseJoinColumns = {@JoinColumn(name = "credentials_id", foreignKey = @ForeignKey(name = "fk_ap_vc_cred_id"), referencedColumnName = "id", unique = true)},
                     uniqueConstraints = {@UniqueConstraint(name = "uk_ap_vc_cred_id", columnNames = {"credentials_id"})}
@@ -46,7 +44,6 @@ public class Saml2AssertingPartyEntity {
     @JoinTable
             (
                     name = "security_saml2_asserting_party_encryption_credentials",
-                    catalog = "authentication_server",
                     joinColumns = {@JoinColumn(name = "entity_id", foreignKey = @ForeignKey(name = "fk_ap_ec_reg_id"), referencedColumnName = "entity_id")},
                     inverseJoinColumns = {@JoinColumn(name = "credentials_id", foreignKey = @ForeignKey(name = "fk_ap_ec_cred_id"), referencedColumnName = "id", unique = true)},
                     uniqueConstraints = {@UniqueConstraint(name = "uk_ap_ec_cred_id", columnNames = {"credentials_id"})}
