@@ -38,5 +38,5 @@ build/
 node_modules/
 src/main/frontend/generated/
 vite.generated.ts
-/vaadin/src/main/bundles/
-/hilla/src/main/bundles/
+/vaadin-web-application/src/main/bundles/
+/hilla-web-application/src/main/bundles/

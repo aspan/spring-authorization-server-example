@@ -18,12 +18,14 @@ and javascript that demonstrates SPA login. Run with `./run-web.sh` which
 will start the authorization and resource servers before the app is started
 and stop them after.
 
-## Vaadin
+## Vaadin & Hilla
 
-The `vaadin-web-application` module demonstrates how to integrate OAuth2
-with the Flow java based frontend. Run with `./run-vaadin.sh` which will
-start the authorization and resource servers before the app is started
-and stop them after.
+The `vaadin-web-application` and `hilla-web-application` modules demonstrates
+how to integrate OAuth2 with the Flow java based frontend and with the Hilla
+react based frontend. Run the Flow app with `./run-vaadin-dev.sh` or 
+`./run-vaadin-prod.sh` and the Hilla app with `./run-hilla-dev.sh` or 
+`./run-hilla-prod.sh` which will start the authorization and resource servers
+before the app is started and stop them after.
 
 ## Desktop JavaFX
 

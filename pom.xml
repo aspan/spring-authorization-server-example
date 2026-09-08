@@ -23,6 +23,8 @@
         <jquery.version>3.7.1</jquery.version>
         <js-cookie.version>3.0.1</js-cookie.version>
         <nimbus-jose-jwt.version>10.9.1</nimbus-jose-jwt.version>
+        <!-- Works in production mode-->
+<!--        <vaadin.version>25.1.11</vaadin.version>-->
         <vaadin.version>25.2.7</vaadin.version>
     </properties>
 
