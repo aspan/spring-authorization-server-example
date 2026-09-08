@@ -18,12 +18,12 @@
 
     <properties>
         <bootstrap.version>5.3.8</bootstrap.version>
-        <java.version>25</java.version>
-        <javafx.version>25.0.4</javafx.version>
+        <java.version>26</java.version>
+        <javafx.version>26.0.2</javafx.version>
         <jquery.version>3.7.1</jquery.version>
         <js-cookie.version>3.0.1</js-cookie.version>
         <nimbus-jose-jwt.version>10.9.1</nimbus-jose-jwt.version>
-        <vaadin.version>25.2.6</vaadin.version>
+        <vaadin.version>25.2.7</vaadin.version>
     </properties>
 
     <licenses>
@@ -132,6 +132,7 @@
         <module>browser-opener</module>
         <module>resource-server</module>
         <module>vaadin-web-application</module>
+        <module>hilla-web-application</module>
         <module>thymeleaf-web-application</module>
         <module>resource-client</module>
     </modules>
