@@ -25,7 +25,7 @@
         <nimbus-jose-jwt.version>10.9.1</nimbus-jose-jwt.version>
         <!-- Works in production mode-->
 <!--        <vaadin.version>25.1.11</vaadin.version>-->
-        <vaadin.version>25.2.7</vaadin.version>
+        <vaadin.version>25.2.8</vaadin.version>
     </properties>
 
     <licenses>
