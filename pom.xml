@@ -20,7 +20,7 @@
         <bootstrap.version>5.3.8</bootstrap.version>
         <java.version>26</java.version>
         <javafx.version>26.0.2</javafx.version>
-        <jquery.version>3.7.1</jquery.version>
+        <jquery.version>3.8.0</jquery.version>
         <js-cookie.version>3.0.1</js-cookie.version>
         <nimbus-jose-jwt.version>10.10</nimbus-jose-jwt.version>
         <!-- Works in production mode-->
